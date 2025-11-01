@@ -19,7 +19,7 @@ public class AuthService
         var body = JsonSerializer.Serialize(new { email, password });
         var content = new StringContent(body, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync("https://localhost:5001/v1/accounts/login", content);
+        var response = await _httpClient.PostAsync("https://localhost:7157/v1/accounts/login", content);
 
         if (!response.IsSuccessStatusCode)
             return false;
