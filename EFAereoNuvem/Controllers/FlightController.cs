@@ -1,5 +1,4 @@
-﻿using Azure;
-using EFAereoNuvem.Models;
+﻿using EFAereoNuvem.Models;
 using EFAereoNuvem.Repository.Interface;
 using EFAereoNuvem.ViewModel;
 using EFAereoNuvem.ViewModel.ResponseViewModel;
@@ -22,11 +21,11 @@ public class FlightController : Controller
     }
 
     // INDEX 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1, int pageSize = 25)
     {
         try
         {
-            var flights = await _flightRepository.GetAllAsync();
+            var flights = await _flightRepository.GetAllAsync(page, pageSize );
             var flightViewModel = flights.Select(FlightViewModel.GetFlightViewModel).ToList();
             return View(flightViewModel);
         }
@@ -81,15 +80,10 @@ public class FlightController : Controller
             TempData["SuccessMessage"] = response.Messages.FirstOrDefault()?.Message;
             return RedirectToAction(nameof(Index));
         }
-        catch (Exception ex)
+        catch 
         {
             await LoadAirplanes();
-            var response = new ResponseViewModel<Flight>(
-                new List<MessageResponse>
-                {
-                    new(TypeMessage.ERRO, 5001, $"Erro ao cadastrar voo: {ex.Message}")
-                }
-            );
+            var response = new ResponseViewModel<Flight>(flight, ConstantsMessage.ERRO_CADASTRO_VOO);
 
             TempData["ErrorMessage"] = response.Messages.FirstOrDefault()?.Message;
             return View(flight);
@@ -165,12 +159,7 @@ public class FlightController : Controller
         catch (Exception ex)
         {
             await LoadAirplanes();
-            var response = new ResponseViewModel<Flight>(
-                new List<MessageResponse>
-                {
-                    new(TypeMessage.ERRO, 5001, $"Erro ao cadastrar voo: {ex.Message}")
-                }
-            );
+            var response = new ResponseViewModel<Flight>(flight, ConstantsMessage.ERRO_AO_ATUALIZAR_VOO);
 
             TempData["ErrorMessage"] = response.Messages.FirstOrDefault()?.Message;
             return View(flight);
@@ -180,14 +169,23 @@ public class FlightController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(Guid id)
     {
-        var flight = await _flightRepository.GetByIdWithScales(id);
-        if (flight == null)
+        try
         {
-            var response = new ResponseViewModel<Flight?>(data: null, message: ConstantsMessage.NENHUM_VOO_ENCONTRADO);
+            var flight = await _flightRepository.GetByIdWithScales(id);
+            if (flight == null)
+            {
+                var response = new ResponseViewModel<Flight?>(ConstantsMessage.NENHUM_VOO_ENCONTRADO);
+                TempData["ErrorMessage"] = response.Messages.FirstOrDefault()?.Message;
+                return RedirectToAction(nameof(Index));
+            }
+            return View(flight);
+        }
+        catch
+        {
+            var response = new ResponseViewModel<Flight?>(ConstantsMessage.ERRO_SERVIDOR);
             TempData["ErrorMessage"] = response.Messages.FirstOrDefault()?.Message;
             return RedirectToAction(nameof(Index));
         }
-        return View(flight);
     }
 
     [HttpPost]
@@ -196,6 +194,23 @@ public class FlightController : Controller
     {
         try
         {
+            var flight = await _flightRepository.GetByIdWithScales(id);
+
+            if (flight == null)
+            {
+                var res = new ResponseViewModel<Flight?>(ConstantsMessage.NENHUM_VOO_ENCONTRADO);
+                TempData["ErrorMessage"] = res.Messages.FirstOrDefault()?.Message;
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Não permitie excluir se houver reservas associadas
+            if (flight.Reservations != null && flight.Reservations.Any())
+            {
+                var res = new ResponseViewModel<Flight>(ConstantsMessage.ERRO_AO_DELETAR_VOO);
+                TempData["ErrorMessage"] = res.Messages.FirstOrDefault()?.Message;
+                return RedirectToAction(nameof(Index));
+            }
+
             await _flightRepository.DeleteAsync(id);
 
             var response = new ResponseViewModel<Flight>(ConstantsMessage.VOO_DELETADO_COM_SUCESSO);
@@ -203,12 +218,7 @@ public class FlightController : Controller
         }
         catch (Exception ex)
         {
-            var response = new ResponseViewModel<Flight>(
-            new List<MessageResponse>
-            {
-                new MessageResponse(TypeMessage.ERRO, 5003, $"Erro ao excluir voo: {ex.Message}")
-            }
-        );
+            var response = new ResponseViewModel<Flight?>(ConstantsMessage.ERRO_AO_DELETAR_VOO);
             TempData["ErrorMessage"] = response.Messages.FirstOrDefault()?.Message;
         }
 
@@ -265,9 +275,9 @@ public class FlightController : Controller
     }
 
     // AUXIIARES
-    private async Task LoadAirplanes()
+    private async Task LoadAirplanes(int page = 1, int pageSize = 25)
     {
-        var airplanes = await _airplaneRepository.GetAll();
+        var airplanes = await _airplaneRepository.GetAll(page, pageSize);
         ViewBag.Airplanes = new SelectList(airplanes, "Id", "Prefix");
     }
 

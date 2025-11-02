@@ -8,7 +8,7 @@ namespace EFAereoNuvem.Repository.Interface
         Task Create(Client client);
 
         // READ - Consultas básicas
-        Task<List<Client>> GetAll();
+        Task<List<Client>> GetAll(int pageNumber, int pageSize);
         Task<Client?> GetById(Guid id);
         Task<Client?> GetByCpf(string cpf);
         Task<Client?> GetByEmail(string email);
@@ -32,11 +32,9 @@ namespace EFAereoNuvem.Repository.Interface
         Task UpdateClientStatus(Guid clientId, Guid statusId);
 
         // DELETE
-        Task Delete(Client client);
         Task DeleteById(Guid id);
 
         // UTILITY
         Task<int> Count();
-        Task<List<Client>> GetPaginated(int pageNumber, int pageSize);
     }
 }

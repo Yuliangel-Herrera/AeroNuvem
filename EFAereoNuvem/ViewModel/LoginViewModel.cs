@@ -10,5 +10,5 @@ public class LoginViewModel
     [Required(ErrorMessage = "Informe a senha")]
     public string Password { get; set; } = string.Empty;
 
-    public string? ErrorMessage { get; set; }
+    public string? ErrorMessage { get; set; } // necessario??
 }

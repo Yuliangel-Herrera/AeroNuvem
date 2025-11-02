@@ -1,15 +1,15 @@
 ﻿using EFAereoNuvem.Models;
 
-namespace EFAereoNuvem.Repository.Interface
+namespace EFAereoNuvem.Repository.Interface;
+public interface IAirplaneRepository
 {
-    public interface IAirplaneRepository
-    {
-        Task Create(Airplane airplane);
-        Task Update(Airplane airplane);
-        Task Delete(Guid id);
-        Task<Airplane> GetById(Guid id);
-        Task<Airplane?> GetByPrefix(string prefix);
-        Task<List<Airplane>> GetAll();
-        Task<bool> PrefixExists(string prefix);
-    }
+    Task CreateAsync(Airplane airplane);
+    Task UpdateAsync(Airplane airplane);
+    Task DeleteAsync(Guid id);
+    Task<Airplane?> GetById(Guid id);
+    Task<Airplane?> GetByPrefix(string prefix);
+    Task<List<Airplane>> GetAll(int pageNumber, int pageSize);
+    Task<bool> PrefixExists(string prefix);
+    Task<List<Flight>> GetFlightScheduleAsync(Guid airplaneId);
+
 }

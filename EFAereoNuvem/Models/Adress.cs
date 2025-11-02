@@ -29,7 +29,7 @@ namespace EFAereoNuvem.Models
 
         [Required]
         [MaxLength(50)]
-        public string Country { get; set; } = string.Empty;
+        public string Country { get; set; } = "Brasil";
 
         [Required]
         [MaxLength(9)]
