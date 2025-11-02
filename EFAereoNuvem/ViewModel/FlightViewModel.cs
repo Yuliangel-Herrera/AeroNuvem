@@ -8,14 +8,14 @@ public class FlightViewModel
     public DateTime Departure { get; set; }
     public bool ExistScale { get; set; } = true;
 
-    public static FlightViewModel GetFlightViewModel(Flight f)
+    public static FlightViewModel GetFlightViewModel(Flight flight)
     {
         return new FlightViewModel
         {
-            Origin = f.Origin,
-            Destination = f.Destination,
-            Departure = f.Departure,
-            ExistScale = f.ExistScale
+            Origin = flight.Origin,
+            Destination = flight.Destination,
+            Departure = flight.Departure,
+            ExistScale = flight.ExistScale
         };
     }
 }

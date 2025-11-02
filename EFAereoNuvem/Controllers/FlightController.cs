@@ -156,7 +156,7 @@ public class FlightController : Controller
             TempData["SuccessMessage"] = response.Messages.FirstOrDefault()?.Message;
             return RedirectToAction(nameof(Index));
         }
-        catch (Exception ex)
+        catch 
         {
             await LoadAirplanes();
             var response = new ResponseViewModel<Flight>(flight, ConstantsMessage.ERRO_AO_ATUALIZAR_VOO);
@@ -167,6 +167,7 @@ public class FlightController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,Client")]
     public async Task<IActionResult> Details(Guid id)
     {
         try

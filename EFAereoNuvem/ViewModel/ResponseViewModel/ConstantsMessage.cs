@@ -62,4 +62,7 @@ public class ConstantsMessage
     public static readonly MessageResponse CLIENTE_EXCLUIDO_COM_SUCESSO = new(TypeMessage.SUCESSO, 5006, "Cliente excluido com sucesso.");
     public static readonly MessageResponse ERRO_AO_EXCLUIR_CLIENTE = new(TypeMessage.ERRO, 5008, "Erro ao excluir cliente.");
     public static readonly MessageResponse ERRO_AO_ATUALIZAR_CLIENTE = new(TypeMessage.ERRO, 5007, "Erro ao atualizar cliente.");
+
+    // Reservation
+    public static readonly MessageResponse NENHUMA_RESERVA_ENCONTRADA = new(TypeMessage.ALERTA, 6001, "Nenhuma reserva encontrada.");
 }
