@@ -65,4 +65,5 @@ public class ConstantsMessage
 
     // Reservation
     public static readonly MessageResponse NENHUMA_RESERVA_ENCONTRADA = new(TypeMessage.ALERTA, 6001, "Nenhuma reserva encontrada.");
+    public static readonly MessageResponse ERRO_CADASTRO_RESERVA = new(TypeMessage.ERRO, 6002, "Erro ao cadastrar a reserva.");
 }

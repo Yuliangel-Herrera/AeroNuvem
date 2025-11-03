@@ -1,13 +1,14 @@
 ﻿using EFAereoNuvem.Models;
+using EFAereoNuvem.Models.Enum;
 using EFAereoNuvem.Repository.Interface;
 using EFAereoNuvem.ViewModel;
 using EFAereoNuvem.ViewModel.ResponseViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFAereoNuvem.Controllers;
 
-[Authorize(Roles = "Admin")]
 public class ClientController : Controller
 {
     private readonly IClientRepository _clientRepository;
@@ -19,6 +20,7 @@ public class ClientController : Controller
 
     // ==================== INDEX ====================
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Index(int page = 1, int pageSize = 25)
     {
         try
@@ -42,6 +44,7 @@ public class ClientController : Controller
 
     // ==================== DETAILS ====================
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Details(Guid id)
     {
         try
@@ -67,6 +70,7 @@ public class ClientController : Controller
 
     // ==================== CREATE ====================
     [HttpGet]
+    [Authorize(Roles = "Admin,Client")]
     public IActionResult Create()
     {
         return View();
@@ -74,6 +78,7 @@ public class ClientController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,Client")]
     public async Task<IActionResult> Create(Client client)
     {
         try
@@ -112,6 +117,7 @@ public class ClientController : Controller
 
     // ==================== EDIT ====================
     [HttpGet]
+    [Authorize(Roles = "Admin,Client")]
     public async Task<IActionResult> Edit(Guid id)
     {
         try
@@ -139,6 +145,7 @@ public class ClientController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Client")]
     public async Task<IActionResult> Edit(Guid id, Client client)
     {
         if (id != client.Id)
@@ -185,9 +192,27 @@ public class ClientController : Controller
         }
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UpdateClientStatus(Guid clientId, Status status)
+    {
+        try
+        {
+            await _clientRepository.UpdateClientStatus(clientId, status);
+            return Ok(new { message = "Status do cliente atualizado com sucesso." });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
+        }
+    }
+
+
     // ==================== DELETE ====================
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Client")]
     public async Task<IActionResult> Delete(Guid id)
     {
         try
@@ -275,6 +300,7 @@ public class ClientController : Controller
 
     // ==================== FILTROS ESPECIAIS ====================
     [HttpGet]
+    [Authorize(Roles = "Admin,Client")]
     public async Task<IActionResult> WithReservations()
     {
         try
@@ -291,6 +317,7 @@ public class ClientController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> BirthdayMonth(int? month)
     {
         try
@@ -308,8 +335,48 @@ public class ClientController : Controller
         }
     }
 
-    // ==================== API ENDPOINTS (opcional) ====================
     [HttpGet]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetByStatus(Status status)
+    {
+        try
+        {
+            var clients = await _clientRepository.GetByStatus(status);
+
+            if (clients == null || !clients.Any())
+                return NotFound($"Nenhum cliente encontrado com status '{status}'.");
+
+            return Ok(clients);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
+        }
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetByPriority(bool priority)
+    {
+        try
+        {
+            var clients = await _clientRepository.GetByPriority(priority);
+
+            if (clients == null || !clients.Any())
+                return NotFound(priority
+                    ? "Nenhum cliente prioritário encontrado."
+                    : "Nenhum cliente comum encontrado.");
+
+            return Ok(clients);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
+        }
+    }
+
+        // ==================== API ENDPOINTS (opcional) ====================
+        [HttpGet]
     public async Task<IActionResult> CheckCpf(string cpf)
     {
         var exists = await _clientRepository.CpfExists(cpf);

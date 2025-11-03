@@ -262,7 +262,7 @@ public class FlightController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = "Client")]
+    [Authorize(Roles = "Admin,Client")]
     public async Task<IActionResult> SearchByCode(string code)
     {
         var flight = await _flightRepository.GetByCode(code);

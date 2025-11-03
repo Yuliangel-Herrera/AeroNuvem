@@ -66,10 +66,14 @@ public class ReservationController(IReservationRepository reservationRepository)
 
     [HttpPost]
     [Authorize(Roles = "Client")]
-    public async Task<IActionResult> Create(Flight flight, List<Scale> scales)
+    public async Task<IActionResult> Create(Reservation reservation)
     {
         if (!ModelState.IsValid)
+        {
+            var response = new ResponseViewModel<Reservation>(reservation, ConstantsMessage.ERRO_CADASTRO_RESERVA);
+            TempData["ErrorMessage"] = response.Messages.FirstOrDefault()?.Message;
             return View(reservation);
+        }
 
         await _reservationRepository.CreateAsync(reservation);
         return RedirectToAction(nameof(Index));

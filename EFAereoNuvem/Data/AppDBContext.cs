@@ -13,7 +13,6 @@ public class AppDBContext : DbContext
     public DbSet<Client> Clients { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<Adress> Adresses { get; set; }
-    public DbSet<ClientStatus> ClientStatus { get; set; }
     public DbSet<Flight> Flights { get; set; }
     public DbSet<Airplane> Airplanes { get; set; }
     public DbSet<Reservation> Reservations { get; set; }

@@ -1,5 +1,6 @@
 ﻿using EFAereoNuvem.Data;
 using EFAereoNuvem.Models;
+using EFAereoNuvem.Models.Enum;
 using EFAereoNuvem.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,7 +51,6 @@ namespace EFAereoNuvem.Repository
             return await _context.Clients
                 .Include(c => c.CurrentAdress)
                 .Include(c => c.FutureAdress)
-                .Include(c => c.ClientStatus)
                 .Include(c => c.Reservations)
                 .AsNoTracking()
                 .OrderBy(c => c.Name) 
@@ -64,7 +64,6 @@ namespace EFAereoNuvem.Repository
             return await _context.Clients
                 .Include(c => c.CurrentAdress)
                 .Include(c => c.FutureAdress)
-                .Include(c => c.ClientStatus)
                 .Include(c => c.Reservations)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
@@ -75,7 +74,6 @@ namespace EFAereoNuvem.Repository
             return await _context.Clients
                 .Include(c => c.CurrentAdress)
                 .Include(c => c.FutureAdress)
-                .Include(c => c.ClientStatus)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Cpf == cpf);
         }
@@ -85,7 +83,6 @@ namespace EFAereoNuvem.Repository
             return await _context.Clients
                 .Include(c => c.CurrentAdress)
                 .Include(c => c.FutureAdress)
-                .Include(c => c.ClientStatus)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Email == email);
         }
@@ -94,28 +91,16 @@ namespace EFAereoNuvem.Repository
         {
             return await _context.Clients
                 .Include(c => c.CurrentAdress)
-                .Include(c => c.ClientStatus)
                 .Where(c => c.Name.Contains(name))
                 .AsNoTracking()
                 .ToListAsync();
         }
 
         // ==================== READ - Consultas Específicas ====================
-        public async Task<List<Client>> GetByStatus(Guid statusId)
-        {
-            return await _context.Clients
-                .Include(c => c.CurrentAdress)
-                .Include(c => c.ClientStatus)
-                .Where(c => c.ClientStatus != null && c.ClientStatus.Id == statusId)
-                .AsNoTracking()
-                .ToListAsync();
-        }
-
         public async Task<List<Client>> GetClientsWithReservations()
         {
             return await _context.Clients
                 .Include(c => c.CurrentAdress)
-                .Include(c => c.ClientStatus)
                 .Include(c => c.Reservations)
                 .Where(c => c.Reservations.Any())
                 .AsNoTracking()
@@ -126,7 +111,6 @@ namespace EFAereoNuvem.Repository
         {
             return await _context.Clients
                 .Include(c => c.CurrentAdress)
-                .Include(c => c.ClientStatus)
                 .Where(c => c.CurrentAdress.City.Contains(city))
                 .AsNoTracking()
                 .ToListAsync();
@@ -136,7 +120,6 @@ namespace EFAereoNuvem.Repository
         {
             return await _context.Clients
                 .Include(c => c.CurrentAdress)
-                .Include(c => c.ClientStatus)
                 .Where(c => c.CurrentAdress.State == state)
                 .AsNoTracking()
                 .ToListAsync();
@@ -146,8 +129,24 @@ namespace EFAereoNuvem.Repository
         {
             return await _context.Clients
                 .Include(c => c.CurrentAdress)
-                .Include(c => c.ClientStatus)
                 .Where(c => c.BornDate.Month == month)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+        public async Task<List<Client>> GetByStatus(Status status)
+        {
+            return await _context.Clients
+                .Include(c => c.CurrentAdress)
+                .Where(c => c.Status == status)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<List<Client>> GetByPriority(bool priority)
+        {
+            return await _context.Clients
+                .Include(c => c.CurrentAdress)
+                .Where(c => c.Priority == priority)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -200,17 +199,17 @@ namespace EFAereoNuvem.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateClientStatus(Guid clientId, Guid statusId)
+        public async Task UpdateClientStatus(Guid clientId, Status status)
         {
-            var client = await _context.Clients.FindAsync(clientId);
-            var status = await _context.ClientStatus.FindAsync(statusId);
+            var client = await _context.Clients.FindAsync(clientId) ?? throw new InvalidOperationException($"Cliente não encontrado.");
 
-            if (client != null && status != null)
+            if (client != null)
             {
-                client.ClientStatus = status;
+                client.Status = status; 
                 await _context.SaveChangesAsync();
-            }            
+            }
         }
+
 
         // ==================== DELETE ====================
         public async Task DeleteById(Guid id)

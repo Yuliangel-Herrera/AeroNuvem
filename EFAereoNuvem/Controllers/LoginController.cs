@@ -1,6 +1,7 @@
 ﻿using EFAereoNuvem.Services;
 using EFAereoNuvem.ViewModel;
 using EFAereoNuvem.ViewModel.ResponseViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EFAereoNuvem.Controllers;
@@ -38,6 +39,7 @@ public class LoginController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin,Client")]
     public IActionResult Logout()
     {
         _authService.Logout();

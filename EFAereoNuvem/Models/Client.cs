@@ -1,4 +1,5 @@
 ﻿using EFAereoNuvem.Models;
+using EFAereoNuvem.Models.Enum;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,8 +13,10 @@ public class Client
     public string Name { get; set; } = string.Empty;
     public string? Email { get; set; }
     public string? Phone { get; set; }
-    public DateOnly BornDate { get; set; } 
-    public ClientStatus? ClientStatus { get; set; }
+    public DateOnly BornDate { get; set; }
+    public Status Status { get; set; } = Status.Bronze;
+    public bool Priority { get; set; } = false;
+    public float Discount { get; set; } = 0;
 
     // Endereço atual (obrigatório)
     public Guid CurrentAdressId { get; set; } // FK
