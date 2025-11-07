@@ -1,0 +1,270 @@
+﻿@model IEnumerable<EFAereoNuvem.Models.Client>
+
+@{
+    ViewData["Title"] = ViewBag.PageTitle ?? "Clientes";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-users me-2"></i>
+                    <span class="fw-semibold">Gestão de Clientes</span>
+                </div>
+                <h1 class="page-header mb-3">Gerenciamento de Clientes</h1>
+                <p class="lead text-muted mb-4">Gerencie todos os clientes do sistema de forma moderna e eficiente</p>
+
+                <div class="d-flex flex-wrap gap-3">
+                    <a asp-action="Create" class="btn btn-primary-custom pulse-glow">
+                        <i class="bi bi-plus-circle me-2"></i> Novo Cliente
+                    </a>
+                    <a asp-action="BirthdayMonth" class="btn btn-secondary-custom">
+                        <i class="fas fa-birthday-cake me-2"></i> Aniversariantes
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="200">
+                <div class="floating">
+                    <i class="fas fa-user-friends" style="font-size: 8rem; color: var(--accent2); opacity: 0.7;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-5">
+    <div class="container">
+        <!-- Messages -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-custom alert-dismissible fade show mb-4" role="alert" data-aos="fade-up">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill me-3" style="font-size: 1.5rem;"></i>
+                    <div class="flex-grow-1">
+                        <h6 class="alert-heading mb-1">Sucesso!</h6>
+                        <p class="mb-0">@TempData["SuccessMessage"]</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-custom alert-dismissible fade show mb-4" role="alert" data-aos="fade-up">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill me-3" style="font-size: 1.5rem;"></i>
+                    <div class="flex-grow-1">
+                        <h6 class="alert-heading mb-1">Erro!</h6>
+                        <p class="mb-0">@TempData["ErrorMessage"]</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        }
+
+        <!-- Search and Filters -->
+        <div class="card mb-4" data-aos="fade-up">
+            <div class="card-body">
+                <h5 class="card-title mb-4" style="color: var(--primary);">
+                    <i class="fas fa-search me-2"></i>Buscar Clientes
+                </h5>
+                <form asp-action="Search" method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Tipo de Busca</label>
+                        <select name="searchType" class="form-control">
+                            <option value="name">Nome</option>
+                            <option value="cpf">CPF</option>
+                            <option value="email">Email</option>
+                            <option value="city">Cidade</option>
+                            <option value="state">Estado</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Termo de Busca</label>
+                        <input type="text" name="searchValue" class="form-control" placeholder="Digite para buscar..." required>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary-custom w-100">
+                            <i class="bi bi-search me-2"></i> Buscar
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-4 pt-3 border-top">
+                    <div class="d-flex flex-wrap gap-2">
+                        <a asp-action="Index" class="btn btn-sm"
+                           style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
+                            <i class="fas fa-list me-1"></i> Todos os Clientes
+                        </a>
+                        <a asp-action="WithReservations" class="btn btn-sm"
+                           style="background: linear-gradient(135deg, var(--accent2), var(--accent3)); color: white;">
+                            <i class="fas fa-calendar-check me-1"></i> Com Reservas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clients Table -->
+        @if (Model != null && Model.Any())
+        {
+            <div class="card" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                    <h5 class="card-title mb-0 text-white">
+                        <i class="fas fa-list me-2"></i>Lista de Clientes
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-custom table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-id-card me-2"></i>CPF</th>
+                                    <th><i class="fas fa-user me-2"></i>Nome</th>
+                                    <th><i class="fas fa-envelope me-2"></i>Email</th>
+                                    <th><i class="fas fa-phone me-2"></i>Telefone</th>
+                                    <th><i class="fas fa-city me-2"></i>Cidade</th>
+                                    <th><i class="fas fa-star me-2"></i>Status</th>
+                                    <th class="text-center"><i class="fas fa-cogs me-2"></i>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var client in Model)
+                                {
+                                    <tr>
+                                        <td class="fw-semibold">@client.Cpf</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm me-3">
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                                         style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
+                                                        @client.Name.Split(' ').First().First()@client.Name.Split(' ').Last().First()
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-bold" style="color: var(--primary);">@client.Name</div>
+                                                    <small class="text-muted">ID: @client.Id</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>@(client.Email ?? "-")</td>
+                                        <td>@(client.Phone ?? "-")</td>
+                                        <td>
+                                            <span class="badge badge-custom">@client.CurrentAdress?.City</span>
+                                        </td>
+                                        @* <td>
+                                            @if (client.ClientStatus != null)
+                                            {
+                                                <span class="badge" style="background: linear-gradient(135deg, var(--accent2), var(--accent3)); color: white;">
+                                                    @client.ClientStatus.Status
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge" style="background: var(--accent1); color: var(--dark);">Padrão</span>
+                                            }
+                                        </td> *@
+                                        <td class="text-center">
+                                            <div class="btn-group" role="group">
+                                                <a asp-action="Edit" asp-route-id="@client.Id" class="btn btn-sm btn-outline-primary" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                        data-client-id="@client.Id" data-client-name="@client.Name">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card text-center py-5" data-aos="fade-up">
+                <div class="card-body">
+                    <div class="floating mb-4">
+                        <i class="fas fa-user-slash" style="font-size: 4rem; color: var(--accent2);"></i>
+                    </div>
+                    <h4 style="color: var(--primary);">Nenhum cliente encontrado</h4>
+                    <p class="text-muted mb-4">Comece cadastrando um novo cliente no sistema</p>
+                    <a asp-action="Create" class="btn btn-primary-custom">
+                        <i class="bi bi-plus-circle me-2"></i> Cadastrar Primeiro Cliente
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                <h5 class="modal-title text-white">
+                    <i class="bi bi-exclamation-triangle me-2"></i> Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning alert-custom mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill me-3" style="color: var(--accent2);"></i>
+                        <div>
+                            <strong>Atenção!</strong> Esta ação não pode ser desfeita. Todos os dados relacionados serão permanentemente removidos.
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-0">Tem certeza que deseja excluir o cliente <strong id="clientName" style="color: var(--primary);"></strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i> Cancelar
+                </button>
+                <form id="deleteForm" method="post" asp-action="Delete">
+                    <input type="hidden" id="clientId" name="id" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i> Confirmar Exclusão
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-dismiss alerts
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+
+        // Delete modal
+        var deleteModal = document.getElementById('deleteModal');
+        if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var clientId = button.getAttribute('data-client-id');
+                var clientName = button.getAttribute('data-client-name');
+
+                document.getElementById('clientName').textContent = clientName;
+                document.getElementById('clientId').value = clientId;
+            });
+        }
+    </script>
+}

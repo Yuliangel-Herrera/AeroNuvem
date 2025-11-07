@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Cadastro Realizado com Sucesso";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-4"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <span class="fw-semibold">Sucesso!</span>
+                </div>
+                <h1 class="page-header mb-4">Cadastro Realizado!</h1>
+                <p class="lead text-muted mb-5">Sua conta foi criada com sucesso. Agora você pode acessar todos os recursos do sistema.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Success Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-body p-5">
+                        <!-- Ícone de sucesso -->
+                        <div class="mb-4">
+                            <div class="floating bg-primary rounded-circle d-inline-flex align-items-center justify-content-center"
+                                 style="width: 120px; height: 120px; background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;">
+                                <i class="fas fa-check text-white" style="font-size: 3rem;"></i>
+                            </div>
+                        </div>
+
+                        <h3 class="mb-3" style="color: var(--primary);">Cadastro Concluído!</h3>
+
+                        <p class="text-muted mb-4">
+                            Sua conta foi criada com sucesso e está pronta para uso.
+                            Agora você pode explorar todos os recursos do sistema EFAereoNuvem.
+                        </p>
+
+                        <div class="d-grid gap-3">
+                            <a asp-controller="Login" asp-action="Index" class="btn btn-primary-custom btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i> Fazer Login
+                            </a>
+
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary-custom">
+                                <i class="fas fa-home me-2"></i> Página Inicial
+                            </a>
+                        </div>
+
+                        <div class="mt-5 pt-4 border-top">
+                            <small class="text-muted">
+                                <i class="fas fa-headset me-1"></i> Em caso de dúvidas, entre em contato com nosso suporte.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .floating {
+        animation: floating 3s ease-in-out infinite;
+    }
+</style>

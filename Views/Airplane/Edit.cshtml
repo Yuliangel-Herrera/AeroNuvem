@@ -1,0 +1,101 @@
+﻿@model EFAereoNuvem.Models.Airplane
+
+@{
+    ViewData["Title"] = "Editar Aeronave";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-edit me-2"></i>
+                    <span class="fw-semibold">Edição</span>
+                </div>
+                <h1 class="page-header mb-3">Editar Aeronave</h1>
+                <p class="lead text-muted mb-4">Atualize os dados da aeronave abaixo</p>
+            </div>
+            <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="200">
+                <div class="floating">
+                    <i class="fas fa-plane" style="font-size: 8rem; color: var(--accent2); opacity: 0.7;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Form Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                        <h5 class="card-title mb-0 text-white">
+                            <i class="fas fa-edit me-2"></i>Editar Dados da Aeronave
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form asp-action="Edit" method="post">
+                            <input type="hidden" asp-for="Id" />
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-custom mb-4"></div>
+
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label asp-for="Prefix" class="form-label fw-semibold">Prefixo</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="background: var(--accent1);">
+                                            <i class="fas fa-qrcode" style="color: var(--primary);"></i>
+                                        </span>
+                                        <input asp-for="Prefix" class="form-control" readonly />
+                                    </div>
+                                    <small class="text-muted">Prefixo não pode ser alterado</small>
+                                </div>
+
+                                <div class="col-12">
+                                    <label asp-for="Type" class="form-label fw-semibold">Tipo *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="background: var(--accent1);">
+                                            <i class="fas fa-plane" style="color: var(--primary);"></i>
+                                        </span>
+                                        <input asp-for="Type" class="form-control" placeholder="Ex: Boeing 737, Airbus A320" maxlength="50" />
+                                    </div>
+                                    <span asp-validation-for="Type" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label asp-for="Capacity" class="form-label fw-semibold">Capacidade *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="background: var(--accent1);">
+                                            <i class="fas fa-users" style="color: var(--primary);"></i>
+                                        </span>
+                                        <input asp-for="Capacity" type="number" class="form-control" placeholder="Ex: 180" min="1" max="1000" />
+                                    </div>
+                                    <span asp-validation-for="Capacity" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <!-- Botões -->
+                            <div class="d-flex flex-wrap gap-3 justify-content-end pt-4 mt-4 border-top">
+                                <a asp-action="Index" class="btn btn-secondary-custom">
+                                    <i class="bi bi-x-circle me-2"></i> Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary-custom pulse-glow">
+                                    <i class="bi bi-save me-2"></i> Atualizar Aeronave
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,170 @@
+﻿@model EFAereoNuvem.Models.Flight
+
+@{
+    ViewData["Title"] = "Detalhes do Voo";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <span class="fw-semibold">Detalhes</span>
+                </div>
+                <h1 class="page-header mb-3">Detalhes do Voo</h1>
+                <p class="lead text-muted mb-4">Informações completas sobre o voo selecionado</p>
+            </div>
+            <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="200">
+                <div class="floating">
+                    <i class="fas fa-plane" style="font-size: 8rem; color: var(--accent2); opacity: 0.7;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Details Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                        <h5 class="card-title mb-0 text-white">
+                            <i class="fas fa-plane me-2"></i>Informações do Voo
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <label class="fw-bold text-muted">Código:</label>
+                                    <p class="h5" style="color: var(--primary);">@Model.CodeFlight</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <label class="fw-bold text-muted">Tipo:</label>
+                                    <p>
+                                        <span class="badge badge-custom">@Model.TypeFlight</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <label class="fw-bold text-muted">Origem:</label>
+                                    <p class="h6">@Model.Origin</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <label class="fw-bold text-muted">Destino:</label>
+                                    <p class="h6">@Model.Destination</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <label class="fw-bold text-muted">Data:</label>
+                                    <p>
+                                        <span class="badge" style="background: var(--accent1); color: var(--dark);">
+                                            @Model.DateFlight.ToString("dd/MM/yyyy")
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <label class="fw-bold text-muted">Partida:</label>
+                                    <p>
+                                        <span class="badge badge-custom">@Model.Departure.ToString("HH:mm")</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <label class="fw-bold text-muted">Chegada:</label>
+                                    <p>
+                                        <span class="badge" style="background: linear-gradient(135deg, var(--accent2), var(--accent3)); color: white;">
+                                            @Model.Arrival.ToString("HH:mm")
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <label class="fw-bold text-muted">Duração:</label>
+                                    <p class="h6">@Model.Duration horas</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <label class="fw-bold text-muted">Aeronave:</label>
+                                    <p class="h6" style="color: var(--primary);">
+                                        @Model.Airplane?.Prefix - @Model.Airplane?.Type
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Model.ExistScale && Model.Scales.Any())
+                        {
+                            <div class="mt-5 pt-4 border-top">
+                                <h5 class="border-bottom pb-3 mb-4" style="color: var(--primary);">
+                                    <i class="fas fa-map-signs me-2"></i>Escalas
+                                </h5>
+                                <div class="table-responsive">
+                                    <table class="table table-custom table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Local</th>
+                                                <th>Chegada</th>
+                                                <th>Partida</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var scale in Model.Scales.OrderBy(s => s.Arrival))
+                                            {
+                                                <tr>
+                                                    <td class="fw-semibold">@scale.Location</td>
+                                                    <td>
+                                                        <span class="badge badge-custom">@scale.Arrival.ToString("HH:mm")</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge" style="background: linear-gradient(135deg, var(--accent2), var(--accent3)); color: white;">
+                                                            @scale.Departure.ToString("HH:mm")
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="d-flex flex-wrap gap-3 justify-content-end pt-4 mt-4 border-top">
+                            <a asp-action="Index" class="btn btn-secondary-custom">
+                                <i class="bi bi-arrow-left me-2"></i> Voltar
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary-custom">
+                                <i class="bi bi-pencil me-2"></i> Editar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .detail-item {
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 12px;
+        border: 1px solid rgba(95, 155, 138, 0.1);
+    }
+</style>

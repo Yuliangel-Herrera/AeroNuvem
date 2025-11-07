@@ -1,0 +1,140 @@
+﻿@model EFAereoNuvem.ViewModel.ReservationViewModel
+@{
+    ViewData["Title"] = "Detalhes da Reserva";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-file-alt me-2"></i>
+                    <span class="fw-semibold">Detalhes</span>
+                </div>
+                <h1 class="page-header mb-3">Detalhes da Reserva</h1>
+                <p class="lead text-muted mb-0">Reserva @Model.ReservationNumber</p>
+            </div>
+            <div class="col-lg-4 text-end">
+                <a asp-action="MyReservations" class="btn btn-secondary-custom">
+                    <i class="fas fa-arrow-left me-2"></i> Voltar
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Detalhes da Reserva -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-info-circle me-2"></i>Informações da Reserva
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Informações do Voo -->
+                            <div class="col-md-6">
+                                <h6 class="border-bottom pb-2 mb-3">Informações do Voo</h6>
+                                <div class="mb-3">
+                                    <strong>Número do Voo:</strong> @Model.FlightNumber<br>
+                                    <strong>Companhia:</strong> @Model.Airline<br>
+                                    <strong>Aeronave:</strong> @Model.AircraftType
+                                </div>
+
+                                <div class="flight-route mb-4">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="text-center">
+                                            <strong>@Model.Origin</strong><br>
+                                            <small class="text-muted">@Model.DepartureTime.ToString("dd/MM/yyyy HH:mm")</small>
+                                        </div>
+                                        <div class="flight-arrow">
+                                            <i class="fas fa-arrow-right text-muted"></i>
+                                        </div>
+                                        <div class="text-center">
+                                            <strong>@Model.Destination</strong><br>
+                                            <small class="text-muted">@Model.ArrivalTime.ToString("dd/MM/yyyy HH:mm")</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <strong>Terminal:</strong> @Model.Terminal<br>
+                                        <strong>Portão:</strong> @Model.Gate
+                                    </div>
+                                    <div class="col-6">
+                                        <strong>Classe:</strong> @Model.FlightClass<br>
+                                        <strong>Bagagem:</strong> @Model.BaggageAllowance
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Informações do Passageiro -->
+                            <div class="col-md-6">
+                                <h6 class="border-bottom pb-2 mb-3">Informações do Passageiro</h6>
+                                <div class="mb-3">
+                                    <strong>Nome:</strong> @Model.PassengerName<br>
+                                    <strong>E-mail:</strong> @Model.PassengerEmail<br>
+                                    <strong>Telefone:</strong> @Model.PassengerPhone
+                                </div>
+
+                                <h6 class="border-bottom pb-2 mb-3">Detalhes da Reserva</h6>
+                                <div class="mb-3">
+                                    <strong>Número da Reserva:</strong> @Model.ReservationNumber<br>
+                                    <strong>Status:</strong>
+                                    <span class="badge @(Model.Status == "Confirmada" ? "bg-success" : "bg-warning")">
+                                        @Model.Status
+                                    </span><br>
+                                    <strong>Assento:</strong> @Model.SeatNumber<br>
+                                    <strong>Data da Reserva:</strong> @Model.ReservationDate.ToString("dd/MM/yyyy HH:mm")
+                                </div>
+
+                                <div class="price-section text-center p-3 bg-light rounded">
+                                    <h4 class="text-primary mb-0">R$ @Model.Price.ToString("N2")</h4>
+                                    <small class="text-muted">Valor Total</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        @if (Model.Status == "Confirmada")
+                        {
+                            <form asp-action="CancelReservation" method="post" class="d-inline">
+                                <input type="hidden" name="reservationId" value="@Model.Id" />
+                                <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Tem certeza que deseja cancelar esta reserva?')">
+                                    <i class="fas fa-times me-2"></i>Cancelar Reserva
+                                </button>
+                            </form>
+                        }
+                        <a asp-action="MyReservations" class="btn btn-secondary ms-2">
+                            <i class="fas fa-arrow-left me-2"></i>Voltar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .flight-route {
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .flight-arrow {
+        font-size: 1.5rem;
+    }
+
+    .price-section {
+        border: 2px dashed #dee2e6;
+    }
+</style>

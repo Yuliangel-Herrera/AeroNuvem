@@ -1,0 +1,269 @@
+﻿@model EFAereoNuvem.ViewModel.ClientCreateViewModel
+
+@{
+    ViewData["Title"] = "Cadastro de Cliente";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-user-plus me-2"></i>
+                    <span class="fw-semibold">Cadastro</span>
+                </div>
+                <h1 class="page-header mb-3">Cadastro de Cliente</h1>
+                <p class="lead text-muted mb-4">Crie sua conta para acessar todos os recursos do sistema</p>
+            </div>
+            <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="200">
+                <div class="floating">
+                    <i class="fas fa-user-plus" style="font-size: 8rem; color: var(--accent2); opacity: 0.7;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Form Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                        <h5 class="card-title mb-0 text-white">
+                            <i class="fas fa-user-circle me-2"></i>Dados de Cadastro
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form asp-controller="CreateAccount" asp-action="Register" method="post">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-custom mb-4"></div>
+
+                            <!-- Dados Pessoais -->
+                            <div class="mb-5">
+                                <h5 class="border-bottom pb-3 mb-4" style="color: var(--primary);">
+                                    <i class="fas fa-id-card me-2"></i>Dados Pessoais
+                                </h5>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="Name" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-user" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="Name" class="form-control" placeholder="Nome completo" />
+                                        </div>
+                                        <span asp-validation-for="Name" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="Cpf" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-id-card" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="Cpf" class="form-control" placeholder="000.000.000-00" />
+                                        </div>
+                                        <span asp-validation-for="Cpf" class="text-danger small"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-6">
+                                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-envelope" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="Email" class="form-control" placeholder="email@exemplo.com" />
+                                        </div>
+                                        <span asp-validation-for="Email" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="Phone" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-phone" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="Phone" class="form-control" placeholder="(00) 00000-0000" />
+                                        </div>
+                                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-6">
+                                        <label asp-for="BornDate" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-calendar" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="BornDate" type="date" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="BornDate" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="Password" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-lock" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="Password" type="password" class="form-control" placeholder="Sua senha" />
+                                        </div>
+                                        <span asp-validation-for="Password" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Endereço -->
+                            <div class="mb-5">
+                                <h5 class="border-bottom pb-3 mb-4" style="color: var(--primary);">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Endereço
+                                </h5>
+
+                                <div class="row g-3">
+                                    <div class="col-md-8">
+                                        <label asp-for="Street" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-road" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="Street" class="form-control" placeholder="Rua, Avenida..." />
+                                        </div>
+                                        <span asp-validation-for="Street" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label asp-for="Number" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-hashtag" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="Number" class="form-control" placeholder="Número" />
+                                        </div>
+                                        <span asp-validation-for="Number" class="text-danger small"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mt-2">
+                                    <div class="col-12">
+                                        <label asp-for="Complement" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-building" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="Complement" class="form-control" placeholder="Apto, Bloco, Sala..." />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-5">
+                                        <label asp-for="City" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-city" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="City" class="form-control" placeholder="Cidade" />
+                                        </div>
+                                        <span asp-validation-for="City" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label asp-for="State" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-map" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="State" class="form-control" placeholder="UF" maxlength="2" />
+                                        </div>
+                                        <span asp-validation-for="State" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label asp-for="Cep" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-mail-bulk" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="Cep" class="form-control" placeholder="00000-000" />
+                                        </div>
+                                        <span asp-validation-for="Cep" class="text-danger small"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mt-2">
+                                    <div class="col-12">
+                                        <label asp-for="Country" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--accent1);">
+                                                <i class="fas fa-flag" style="color: var(--primary);"></i>
+                                            </span>
+                                            <input asp-for="Country" class="form-control" value="Brasil" />
+                                        </div>
+                                        <span asp-validation-for="Country" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botões -->
+                            <div class="d-flex flex-wrap gap-3 justify-content-end pt-4 border-top">
+                                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary-custom">
+                                    <i class="bi bi-x-circle me-2"></i> Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary-custom pulse-glow">
+                                    <i class="bi bi-save me-2"></i> Cadastrar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Máscaras para os campos
+        document.querySelector('[name="Cpf"]')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                if (value.length > 9) {
+                    e.target.value = `${value.slice(0,3)}.${value.slice(3,6)}.${value.slice(6,9)}-${value.slice(9)}`;
+                } else if (value.length > 6) {
+                    e.target.value = `${value.slice(0,3)}.${value.slice(3,6)}.${value.slice(6)}`;
+                } else if (value.length > 3) {
+                    e.target.value = `${value.slice(0,3)}.${value.slice(3)}`;
+                } else {
+                    e.target.value = value;
+                }
+            }
+        });
+
+        document.querySelector('[name="Phone"]')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                if (value.length <= 2) {
+                    e.target.value = value;
+                } else if (value.length <= 7) {
+                    e.target.value = `(${value.slice(0,2)}) ${value.slice(2)}`;
+                } else {
+                    e.target.value = `(${value.slice(0,2)}) ${value.slice(2,7)}-${value.slice(7,11)}`;
+                }
+            }
+        });
+
+        document.querySelector('[name="Cep"]')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 8) {
+                if (value.length > 5) {
+                    e.target.value = `${value.slice(0,5)}-${value.slice(5)}`;
+                } else {
+                    e.target.value = value;
+                }
+            }
+        });
+    </script>
+}
