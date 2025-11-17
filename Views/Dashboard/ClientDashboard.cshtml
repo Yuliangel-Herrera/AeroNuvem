@@ -1,46 +1,141 @@
-﻿@{
+﻿﻿@{
     ViewData["Title"] = "Painel do Cliente";
 }
 
-<div class="container py-5">
-    <h2 class="mb-4 text-center">Bem-vindo ao seu painel!</h2>
-
-    <div class="row g-4 justify-content-center">
-
-        <!-- Card de Reservas -->
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-calendar-check display-4 text-primary mb-3"></i>
-                    <h5 class="card-title">Minhas Reservas</h5>
-                    <p class="card-text">Veja e gerencie suas reservas de voos.</p>
-                    <a href="@Url.Action("Index", "Reservation")" class="btn btn-primary w-100">Acessar</a>
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-user me-2"></i>
+                    <span class="fw-semibold">Cliente</span>
                 </div>
+                <h1 class="page-header mb-3">Bem-vindo ao seu painel!</h1>
+                <p class="lead text-muted mb-4">Gerencie suas reservas e aproveite nossos serviços exclusivos</p>
             </div>
-        </div>
-
-        <!-- Card de Promoções -->
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-tag-fill display-4 text-success mb-3"></i>
-                    <h5 class="card-title">Promoções</h5>
-                    <p class="card-text">Confira as ofertas e descontos especiais.</p>
-                    <a href="@Url.Action("Promocoes", "ClientDashboard")" class="btn btn-success w-100">Ver Ofertas</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card de Seja Premium -->
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-star-fill display-4 text-warning mb-3"></i>
-                    <h5 class="card-title">Seja Premium</h5>
-                    <p class="card-text">Aproveite benefícios exclusivos e upgrades.</p>
-                    <a href="@Url.Action("SejaPremium", "ClientDashboard")" class="btn btn-warning text-white w-100">Torne-se Premium</a>
+            <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="200">
+                <div class="floating">
+                    <i class="fas fa-user-circle" style="font-size: 8rem; color: var(--accent2); opacity: 0.7;"></i>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+                <div class="stat-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="fw-bold" style="color: var(--primary);">5</h3>
+                    <p class="text-muted mb-0">Reservas Ativas</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h3 class="fw-bold" style="color: var(--accent2);">12</h3>
+                    <p class="text-muted mb-0">Voos Realizados</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="fw-bold" style="color: var(--secondary);">Premium</h3>
+                    <p class="text-muted mb-0">Seu Status</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+
+            <!-- Card de Reservas -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+                <div class="card h-100 shadow-lg border-0 rounded-4 card-hover">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3 mx-auto" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                            <i class="fas fa-calendar-check text-white"></i>
+                        </div>
+                        <h5 class="card-title fw-semibold mb-2">Minhas Reservas</h5>
+                        <p class="card-text text-muted small mb-4">Veja e gerencie suas reservas de voos.</p>
+                        <a href="@Url.Action("Index", "Reservation")" class="btn btn-primary-custom w-100 fw-semibold">
+                            <i class="fas fa-arrow-right me-2"></i>Acessar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card de Promoções -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card h-100 shadow-lg border-0 rounded-4 card-hover">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3 mx-auto" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                            <i class="fas fa-tag text-white"></i>
+                        </div>
+                        <h5 class="card-title fw-semibold mb-2">Promoções</h5>
+                        <p class="card-text text-muted small mb-4">Confira as ofertas e descontos especiais.</p>
+                        <a href="@Url.Action("Promocoes", "ClientDashboard")" class="btn w-100 fw-semibold"
+                           style="background: linear-gradient(135deg, #28a745, #20c997); color: white; border: none;">
+                            <i class="fas fa-arrow-right me-2"></i>Ver Ofertas
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card de Seja Premium -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card h-100 shadow-lg border-0 rounded-4 card-hover">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3 mx-auto" style="background: linear-gradient(135deg, #ffc107, #fd7e14);">
+                            <i class="fas fa-star text-white"></i>
+                        </div>
+                        <h5 class="card-title fw-semibold mb-2">Seja Premium</h5>
+                        <p class="card-text text-muted small mb-4">Aproveite benefícios exclusivos e upgrades.</p>
+                        <a href="@Url.Action("SejaPremium", "ClientDashboard")" class="btn w-100 fw-semibold"
+                           style="background: linear-gradient(135deg, #ffc107, #fd7e14); color: white; border: none;">
+                            <i class="fas fa-arrow-right me-2"></i>Torne-se Premium
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Estilos extras -->
+<style>
+    .card-hover {
+        transition: all 0.3s ease-in-out;
+    }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(13, 18, 28, 0.15);
+        }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+    }
+</style>
