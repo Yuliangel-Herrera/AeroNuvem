@@ -1,0 +1,130 @@
+﻿@model EFAereoNuvem.ViewModel.ClientCreateViewModel
+
+@{
+    ViewData["Title"] = "Cadastrar Administrador";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-user-shield me-2"></i>
+                    <span class="fw-semibold">Cadastro de Administrador</span>
+                </div>
+                <h1 class="page-header mb-3">Cadastrar Novo Administrador</h1>
+                <p class="lead text-muted mb-4">
+                    Preencha os dados abaixo para adicionar um novo administrador ao sistema.
+                </p>
+            </div>
+            <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="200">
+                <i class="fas fa-user-shield floating" style="font-size: 8rem; color: var(--accent2); opacity: 0.7;"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Form Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="card shadow" data-aos="fade-up">
+                    <div class="card-header text-white"
+                         style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-user-plus me-2"></i>Dados do Administrador
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form asp-action="RegisterAdmin" method="post">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4"></div>
+
+                            <!-- Nome -->
+                            <div class="mb-3">
+                                <label asp-for="Name" class="form-label fw-semibold"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-user text-primary"></i>
+                                    </span>
+                                    <input asp-for="Name" class="form-control" placeholder="Nome completo" />
+                                </div>
+                                <span asp-validation-for="Name" class="text-danger small"></span>
+                            </div>
+
+                            <!-- E-mail -->
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label fw-semibold"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-envelope text-primary"></i>
+                                    </span>
+                                    <input asp-for="Email" type="email" class="form-control" placeholder="email@exemplo.com" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Senha -->
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label fw-semibold"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-lock text-primary"></i>
+                                    </span>
+                                    <input asp-for="Password" type="password" class="form-control" placeholder="Crie uma senha segura" />
+                                </div>
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Confirmação -->
+                            <div class="mb-4">
+                                <label for="confirmPassword" class="form-label fw-semibold">Confirmar Senha</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-check text-primary"></i>
+                                    </span>
+                                    <input id="confirmPassword" type="password" class="form-control" placeholder="Repita a senha" />
+                                </div>
+                                <div id="passwordError" class="text-danger small mt-1 d-none">
+                                    As senhas não coincidem.
+                                </div>
+                            </div>
+
+                            <!-- Botões -->
+                            <div class="d-flex flex-wrap gap-3 justify-content-end pt-3 border-top">
+                                <a asp-action="Index" asp-controller="Login" class="btn btn-secondary-custom">
+                                    <i class="bi bi-x-circle me-2"></i>Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary-custom pulse-glow" id="submitBtn">
+                                    <i class="bi bi-shield-check me-2"></i>Registrar Admin
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        const password = document.querySelector('[name="Password"]');
+        const confirm = document.getElementById('confirmPassword');
+        const error = document.getElementById('passwordError');
+        const submitBtn = document.getElementById('submitBtn');
+
+        confirm.addEventListener('input', () => {
+            if (confirm.value !== password.value) {
+                error.classList.remove('d-none');
+                submitBtn.disabled = true;
+            } else {
+                error.classList.add('d-none');
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+}

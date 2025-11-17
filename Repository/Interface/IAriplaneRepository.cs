@@ -11,5 +11,4 @@ public interface IAirplaneRepository
     Task<List<Airplane>> GetAll(int pageNumber, int pageSize);
     Task<bool> PrefixExists(string prefix);
     Task<List<Flight>> GetFlightScheduleAsync(Guid airplaneId);
-
 }

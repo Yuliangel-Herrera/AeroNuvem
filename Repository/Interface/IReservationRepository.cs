@@ -8,5 +8,5 @@ public interface IReservationRepository
     Task<Reservation?> GetByCode(string CodeRersevation);
     Task<Reservation?> GetByIdAsync(Guid Id);
     Task<IEnumerable<Reservation>?> GetAllAsync(int pageNumber, int pageSize);
-    Task<IEnumerable<Reservation>> GetReservationsByFlightIdAsync(Guid flightId);
+    Task<IEnumerable<Reservation>> GetReservationsByCodeFlightAsync(string codeFlight);
 }

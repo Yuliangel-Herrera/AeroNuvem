@@ -1,4 +1,6 @@
 ﻿using EFAereoNuvem.Models;
+using EFAereoNuvem.Models.Enum;
+using EFAereoNuvem.Repository;
 using EFAereoNuvem.Repository.Interface;
 using EFAereoNuvem.ViewModel;
 using EFAereoNuvem.ViewModel.ResponseViewModel;
@@ -8,9 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace EFAereoNuvem.Controllers;
 
 [Authorize]
-    public class ReservationController(IReservationRepository reservationRepository) : Controller
-    {
+public class ReservationController(IReservationRepository reservationRepository, IFlightRepository flightRepository) : Controller
+{
     private readonly IReservationRepository _reservationRepository = reservationRepository;
+    private readonly IFlightRepository _flightRepository = flightRepository;
 
     // INDEX 
     [Authorize(Roles = "Client")]
@@ -52,31 +55,75 @@ namespace EFAereoNuvem.Controllers;
             return RedirectToAction(nameof(Index));
         }
 
-        var viewModel = ReservationInformationViewModel.GetReservationInformationViewModel(reservation);
+        var viewModel = ReservationViewModel.GetReservationViewModel(reservation);
         return View(viewModel);
     }
 
-    [HttpPost]
-    [Authorize(Roles = "Client")]
-    public IActionResult Create()
+    [HttpGet]
+    [Authorize(Roles = "Admin,Client")]
+    public async Task<IActionResult> Create(Guid flightId)
     {
-        return View();
+        if (flightId == Guid.Empty)
+            return BadRequest("Id não foi enviado");
+
+        // Buscar o voo selecionado
+        var flight = await _flightRepository.GetByIdAsync(flightId);
+
+        if (flight == null)
+            return NotFound("Voo não encontrado");
+
+        // Monta o ViewModel já preenchido
+        var model = new ReservationViewModel
+        {
+            FlightId = flight.Id,
+            FlightNumber = flight.CodeFlight,
+            Origin = flight.Origin,
+            Destination = flight.Destination,
+            DepartureTime = flight.Departure,
+            ArrivalTime = flight.Arrival,
+            Airline = flight.Airline,
+            AircraftType = flight.Airplane.Name,
+            Terminal = flight.DestinationAirport.Name,
+            Price = 900
+        };
+
+        return View(model);
     }
 
     [HttpPost]
-    [Authorize(Roles = "Client")]
-    public async Task<IActionResult> Create(Reservation reservation)
+    [Authorize(Roles = "Admin,Client")]
+    public async Task<IActionResult> Create(ReservationViewModel model)
     {
         if (!ModelState.IsValid)
         {
-            var response = new ResponseViewModel<Reservation>(reservation, ConstantsMessage.ERRO_CADASTRO_RESERVA);
+            var response = new ResponseViewModel<ReservationViewModel>(model, ConstantsMessage.ERRO_CADASTRO_RESERVA);
             TempData["ErrorMessage"] = response.Messages.FirstOrDefault()?.Message;
-            return View(reservation);
+            return View(model);
         }
+
+        var reservation = new Reservation
+        {
+            Id = Guid.NewGuid(),
+            FlightId = model.FlightId,
+            DateReservation = DateTime.Now,
+            CodeRersevation = Guid.NewGuid().ToString().Substring(0, 8),
+            Status = StatusReservation.Confirmada,
+            Gate = model.Gate,
+            Price = 900,
+            Class = Enum.Parse<Class>(model.FlightClass),
+
+            Client = new Client
+            {
+                Name = model.PassengerName,
+                Email = model.PassengerEmail,
+                Phone = model.PassengerPhone
+            }
+        };
 
         await _reservationRepository.CreateAsync(reservation);
         return RedirectToAction("ReservationConfirmation");
     }
+
 
     [HttpPost, ActionName("Delete")]
     [Authorize(Roles = "Client")]
@@ -115,14 +162,17 @@ namespace EFAereoNuvem.Controllers;
     // Todas as reservas de um determinado voo
     [HttpGet]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> SearchByFlight(Guid flightId)
+    public async Task<IActionResult> SearchByFlight(string codeFlight)
     {
-        var reservations = await _reservationRepository.GetReservationsByFlightIdAsync(flightId);
+        if (string.IsNullOrEmpty(codeFlight))
+            return View(new List<ReservationViewModel>());
+
+        var reservations = await _reservationRepository.GetReservationsByCodeFlightAsync(codeFlight);
 
         var reservationViewModel = reservations
-            .Select(ReservationInformationViewModel.GetReservationInformationViewModel)
+            .Select(ReservationViewModel.GetReservationViewModel)
             .ToList();
 
-        return View("Index", reservationViewModel);
+        return View(reservationViewModel);
     }
 }

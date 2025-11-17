@@ -1,0 +1,124 @@
+﻿@model EFAereoNuvem.ViewModel.ReservationViewModel
+@{
+    ViewData["Title"] = "Nova Reserva";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center mb-4">
+            <!-- Botão Voltar Fixo (fora do container/col) -->
+            <a asp-action="AdminDashboard" asp-controller="Dashboard"
+               class="btn btn-primary-custom shadow position-fixed d-inline-flex align-items-center gap-2"
+               style="top: 20px; left: 20px; z-index: 1050; width: auto; padding: 10px 16px; border-radius: 50px;">
+                <i class="bi bi-arrow-left-circle"></i>
+                <span>Voltar</span>
+            </a>
+            <div class="col-lg-8">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-plane-departure me-2"></i>
+                    <span class="fw-semibold">Nova Reserva</span>
+                </div>
+                <h1 class="page-header mb-3">Criar Reserva de Voo</h1>
+                <p class="lead text-muted mb-0">Preencha as informações abaixo para concluir sua reserva</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Formulário de Criação -->
+<section class="pb-5">
+    <div class="container">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5">
+                <form asp-action="Create" asp-controller="Reservation" method="post">
+                    <input type="hidden" asp-for="FlightId" />
+                    <div class="row g-4">
+                        <!-- Dados do Passageiro -->
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3 text-primary">Dados do Passageiro</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PassengerName" class="form-label fw-semibold">Nome Completo</label>
+                            <input asp-for="PassengerName" class="form-control" placeholder="Ex: Ana Souza" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PassengerEmail" class="form-label fw-semibold">E-mail</label>
+                            <input asp-for="PassengerEmail" class="form-control" placeholder="Ex: ana@email.com" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PassengerPhone" class="form-label fw-semibold">Telefone</label>
+                            <input asp-for="PassengerPhone" class="form-control" placeholder="(11) 99999-9999" />
+                        </div>
+
+                        <!-- Dados do Voo -->
+                        <div class="col-12 mt-4">
+                            <h5 class="border-bottom pb-2 mb-3 text-primary">Informações do Voo</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="FlightNumber" class="form-label fw-semibold">Código do Voo</label>
+                            <input asp-for="FlightNumber" class="form-control" placeholder="Ex: AZ1234" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Airline" class="form-label fw-semibold">Companhia Aérea</label>
+                            <input asp-for="Airline" class="form-control" placeholder="Ex: Azul Linhas Aéreas" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Origin" class="form-label fw-semibold">Origem</label>
+                            <input asp-for="Origin" class="form-control" placeholder="Ex: São Paulo (GRU)" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Destination" class="form-label fw-semibold">Destino</label>
+                            <input asp-for="Destination" class="form-control" placeholder="Ex: Recife (REC)" readonly />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="DepartureTime" class="form-label fw-semibold">Partida</label>
+                            <input asp-for="DepartureTime" type="datetime-local" class="form-control" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ArrivalTime" class="form-label fw-semibold">Chegada</label>
+                            <input asp-for="ArrivalTime" type="datetime-local" class="form-control" readonly />
+                        </div>
+
+                        <!-- Detalhes da Reserva -->
+                        <div class="col-12 mt-4">
+                            <h5 class="border-bottom pb-2 mb-3 text-primary">Detalhes da Reserva</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="SeatNumber" class="form-label fw-semibold">Assento</label>
+                            <input asp-for="SeatNumber" class="form-control" placeholder="Ex: 12A" />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="FlightClass" class="form-label fw-semibold">Classe</label>
+                            <select asp-for="FlightClass" class="form-select">
+                                <option value="Econômica">Econômica</option>
+                                <option value="Executiva">Executiva</option>
+                                <option value="Primeira Classe">Primeira Classe</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Price" class="form-label fw-semibold">Preço (R$)</label>
+                            <input asp-for="Price" type="number" step="0.01" class="form-control" readonly />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Terminal" class="form-label fw-semibold">Terminal</label>
+                            <input asp-for="Terminal" class="form-control" placeholder="Ex: Terminal 1" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Gate" class="form-label fw-semibold">Portão</label>
+                            <input asp-for="Gate" class="form-control" placeholder="Ex: A5" />
+                        </div>
+
+                            <button type="submit" class="btn btn-primary-custom px-5">
+                                <i class="fas fa-check-circle me-2"></i> Confirmar Reserva
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

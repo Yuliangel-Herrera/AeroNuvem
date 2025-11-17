@@ -8,20 +8,18 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ==========================================================
-// 1Configurar autenticação por COOKIE
-// ==========================================================
+// Configurar autenticação por COOKIE
 builder.Services.AddAuthentication("CookieAuth")
     .AddCookie("CookieAuth", options =>
     {
-        options.LoginPath = "/Login/Index";               // redireciona se não autenticado
-        options.LogoutPath = "/Login/Logout";             // rota de logout
-        options.AccessDeniedPath = "/Home/AccessDenied";  // se o usuário não tiver permissão
-        options.ExpireTimeSpan = TimeSpan.FromHours(8);   // tempo de expiração
-        options.SlidingExpiration = true;                 // renova se ativo
-        options.Cookie.HttpOnly = true;                   // segurança
-        options.Cookie.IsEssential = true;                // essencial para LGPD/GDPR
-        options.Cookie.Name = "AereoNuvem.Auth";          // nome do cookie
+        options.LoginPath = "/Login/Index";               
+        options.LogoutPath = "/Login/Logout";             
+        options.AccessDeniedPath = "/Home/AccessDenied";  
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);   
+        options.SlidingExpiration = true;                 
+        options.Cookie.HttpOnly = true;                   
+        options.Cookie.IsEssential = true;                
+        options.Cookie.Name = "AereoNuvem.Auth";          
     });
 
 // ==========================================================
@@ -51,6 +49,7 @@ builder.Services.AddScoped<IFlightRepository, FlightRepository>();
 builder.Services.AddScoped<IAirplaneRepository, AirplaneRepository>();
 builder.Services.AddScoped<IScaleRepository, ScaleRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IAirportRepository, AirportRepository>();
 
 builder.Services.AddHttpClient<ApiClient>();
 

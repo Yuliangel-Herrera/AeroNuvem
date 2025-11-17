@@ -1,0 +1,389 @@
+﻿@{
+    Layout = "_Layout"; // ou remova se não quiser usar layout
+    ViewData["Title"] = "Promoções";
+}
+
+<!-- Hero -->
+<section class="hero-section py-5" style="background: linear-gradient(135deg,var(--accent3),var(--accent2)); color: white;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3" style="background: rgba(255,255,255,0.08);">
+                    <i class="fas fa-tags me-2"></i>
+                    <span class="fw-semibold">Ofertas</span>
+                </div>
+                <h1 class="display-6 mb-2">Promoções e Ofertas Especiais</h1>
+                <p class="lead mb-0">Aproveite descontos exclusivos em passagens, pacotes e serviços — por tempo limitado.</p>
+            </div>
+            <div class="col-md-4 text-end d-none d-md-block">
+                <!-- SVG avatar/ilustração inline (sem dependência externa) -->
+                <svg width="140" height="140" viewBox="0 0 24 24" fill="none" class="me-0" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="24" height="24" rx="6" fill="white" fill-opacity="0.06" />
+                    <path d="M7 10a5 5 0 1 1 10 0v1a5 5 0 0 1-10 0v-1zM12 17c-3 0-5 1.5-5 3v1h10v-1c0-1.5-2-3-5-3z" fill="white" fill-opacity="0.9" />
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filter & CTA -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="input-group shadow-sm">
+                    <span class="input-group-text border-0" style="background: var(--accent1);">
+                        <i class="fas fa-search" style="color: var(--primary);"></i>
+                    </span>
+                    <input id="promoSearch" type="text" class="form-control" placeholder="Buscar promoção (ex: praia, internacional, last minute)" />
+                </div>
+            </div>
+
+            <div class="col-md-4 col-lg-3">
+                <select id="promoFilter" class="form-select shadow-sm">
+                    <option value="">Todos os tipos</option>
+                    <option value="flight">Voos</option>
+                    <option value="package">Pacotes</option>
+                    <option value="hotel">Hotel</option>
+                    <option value="transfer">Traslado</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 text-md-end">
+                <button id="clearFilters" class="btn btn-outline-secondary shadow-sm">Limpar</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Promotions Grid -->
+<section class="py-5">
+    <div class="container">
+        <div id="promosCount" class="mb-3 text-muted small">Carregando ofertas...</div>
+
+        <div id="promosGrid" class="row g-4">
+            <!-- Promo cards are rendered by JS (see script below). -->
+        </div>
+
+        <!-- Empty state (hidden by default) -->
+        <div id="promosEmpty" class="card text-center py-5 d-none">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="fas fa-ticket-alt" style="font-size: 3.2rem; color: var(--accent2);"></i>
+                </div>
+                <h4 class="mb-2" style="color: var(--primary);">Nenhuma promoção encontrada</h4>
+                <p class="text-muted mb-3">Tente outro termo ou remova os filtros para ver todas as ofertas.</p>
+                <button id="backToAll" class="btn btn-primary-custom">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i>Ver todas as promoções
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Promo Detail Modal -->
+<div class="modal fade" id="promoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg,var(--primary),var(--secondary));">
+                <h5 class="modal-title text-white" id="promoModalTitle">Detalhes da Promoção</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="promoModalBody">
+                    <!-- preenchido por JS -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="promoActionBtn" class="btn btn-primary-custom" href="#" role="button">
+                    <i class="fas fa-ticket-alt me-2"></i> Aproveitar Promoção
+                </a>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Styles específicos da page -->
+<style>
+    .promo-card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(9,30,66,0.06);
+        transition: transform .22s ease, box-shadow .22s ease;
+    }
+
+        .promo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(9,30,66,0.12);
+        }
+
+    .promo-badge {
+        position: absolute;
+        left: 16px;
+        top: 16px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: .8rem;
+        color: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .promo-image {
+        height: 160px;
+        object-fit: cover;
+        width: 100%;
+        display: block;
+    }
+
+    .promo-body {
+        padding: 1rem;
+    }
+
+    .promo-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: .25rem;
+    }
+
+    .promo-sub {
+        color: #6c757d;
+        font-size: .9rem;
+        margin-bottom: .6rem;
+    }
+
+    .price-old {
+        text-decoration: line-through;
+        color: #a0a0a0;
+        margin-right: .6rem;
+    }
+
+    .price-new {
+        font-weight: 800;
+        color: var(--primary);
+        font-size: 1.25rem;
+    }
+</style>
+
+<!-- Mock data + client-side filtering + modal (sem backend) -->
+@section Scripts {
+    <script>
+        // Mock promotions (client-side only). Replace/remove as needed.
+        const promotions = [
+            {
+                id: 'p1',
+                type: 'flight',
+                title: 'São Paulo → Lisboa - 30% OFF',
+                subtitle: 'Voo direto, taxa inclusa',
+                image: null, // will use SVG placeholder
+                oldPrice: 4200.00,
+                price: 2940.00,
+                expires: '2025-12-31',
+                details: 'Desconto aplicado para compras até 31/12/2025. Parcelamento em 6x sem juros.'
+            },
+            {
+                id: 'p2',
+                type: 'package',
+                title: 'Pacote Rio + Búzios - 40% OFF',
+                subtitle: '3 noites com café incluso',
+                image: null,
+                oldPrice: 1800.00,
+                price: 1080.00,
+                expires: '2025-11-30',
+                details: 'Válido para viagens durante a baixa temporada. Vagas limitadas.'
+            },
+            {
+                id: 'p3',
+                type: 'hotel',
+                title: 'Suite em Gramado - 50% OFF',
+                subtitle: 'Diárias selecionadas',
+                image: null,
+                oldPrice: 1200.00,
+                price: 600.00,
+                expires: '2025-10-15',
+                details: 'Oferta válida em datas pontuais. Cancelamento gratuito até 48h.'
+            },
+            {
+                id: 'p4',
+                type: 'transfer',
+                title: 'Traslado Aeroporto - 25% OFF',
+                subtitle: 'Ida e volta executiva',
+                image: null,
+                oldPrice: 300.00,
+                price: 225.00,
+                expires: '2025-12-31',
+                details: 'Reserva mínima de 1 dia de antecedência.'
+            }
+        ];
+
+        // Utilities
+        function formatPrice(v) {
+            return v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function svgPlaceholder(text, bg) {
+            const svg = encodeURIComponent(`
+                <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='600' viewBox='0 0 1200 600'>
+                    <rect width='100%' height='100%' fill='${bg}'/>
+                    <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial, Helvetica, sans-serif' font-size='36' fill='rgba(255,255,255,0.9)'>${text}</text>
+                </svg>`);
+            return 'data:image/svg+xml;charset=UTF-8,' + svg;
+        }
+
+        // Render promos
+        function renderPromos(list) {
+            const grid = document.getElementById('promosGrid');
+            const empty = document.getElementById('promosEmpty');
+            const count = document.getElementById('promosCount');
+
+            grid.innerHTML = '';
+            if (!list || list.length === 0) {
+                empty.classList.remove('d-none');
+                count.textContent = '0 promoções encontradas';
+                return;
+            } else {
+                empty.classList.add('d-none');
+            }
+
+            count.textContent = `${list.length} promoção(s) encontradas`;
+
+            list.forEach(p => {
+                const col = document.createElement('div');
+                col.className = 'col-sm-6 col-lg-4';
+
+                const card = document.createElement('div');
+                card.className = 'promo-card position-relative';
+
+                // badge
+                const badge = document.createElement('div');
+                badge.className = 'promo-badge';
+                badge.style.background = p.type === 'flight' ? 'var(--primary)' :
+                                         p.type === 'package' ? 'var(--accent2)' :
+                                         p.type === 'hotel' ? 'var(--secondary)' : 'var(--accent3)';
+                badge.textContent = p.type.toUpperCase();
+
+                // image (placeholder)
+                const img = document.createElement('img');
+                img.className = 'promo-image';
+                img.alt = p.title;
+                img.src = svgPlaceholder(p.title.split(' - ')[0], '#0d6efd22');
+
+                // body
+                const body = document.createElement('div');
+                body.className = 'promo-body';
+
+                const title = document.createElement('div');
+                title.className = 'promo-title';
+                title.textContent = p.title;
+
+                const sub = document.createElement('div');
+                sub.className = 'promo-sub';
+                sub.textContent = p.subtitle;
+
+                const pricing = document.createElement('div');
+                pricing.className = 'd-flex align-items-baseline gap-2 mb-2';
+                pricing.innerHTML = `<div class="price-old">R$ ${formatPrice(p.oldPrice)}</div>
+                                     <div class="price-new">R$ ${formatPrice(p.price)}</div>`;
+
+                const actions = document.createElement('div');
+                actions.className = 'd-flex gap-2';
+
+                const btDetails = document.createElement('button');
+                btDetails.className = 'btn btn-outline-primary btn-sm';
+                btDetails.textContent = 'Detalhes';
+                btDetails.addEventListener('click', () => openPromoModal(p));
+
+                const btAction = document.createElement('a');
+                btAction.className = 'btn btn-primary-custom btn-sm';
+                btAction.href = '#';
+                btAction.innerHTML = '<i class="fas fa-ticket-alt me-1"></i>Aproveitar';
+                btAction.addEventListener('click', (e) => { e.preventDefault(); openPromoModal(p); });
+
+                actions.appendChild(btDetails);
+                actions.appendChild(btAction);
+
+                body.appendChild(title);
+                body.appendChild(sub);
+                body.appendChild(pricing);
+                body.appendChild(actions);
+
+                card.appendChild(badge);
+                card.appendChild(img);
+                card.appendChild(body);
+
+                col.appendChild(card);
+                grid.appendChild(col);
+            });
+        }
+
+        // Modal
+        function openPromoModal(promo) {
+            const modalTitle = document.getElementById('promoModalTitle');
+            const modalBody = document.getElementById('promoModalBody');
+            const actionBtn = document.getElementById('promoActionBtn');
+
+            modalTitle.textContent = promo.title;
+            modalBody.innerHTML = `
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <img class="img-fluid rounded" src="${svgPlaceholder(promo.title, '#6f42c122')}" alt="${promo.title}" />
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-2 text-muted">${promo.subtitle}</p>
+                        <p><span class="price-old">R$ ${formatPrice(promo.oldPrice)}</span> <span class="price-new">R$ ${formatPrice(promo.price)}</span></p>
+                        <p class="small text-muted"><strong>Validade:</strong> ${promo.expires}</p>
+                        <p>${promo.details}</p>
+                    </div>
+                </div>
+            `;
+            actionBtn.href = '#'; // aqui iria a rota de compra/reserva
+            // show bootstrap modal
+            const modalEl = document.getElementById('promoModal');
+            const bsModal = new bootstrap.Modal(modalEl);
+            bsModal.show();
+        }
+
+        // Filters
+        function applyFilters() {
+            const q = (document.getElementById('promoSearch').value || '').trim().toLowerCase();
+            const type = (document.getElementById('promoFilter').value || '').trim();
+
+            const filtered = promotions.filter(p => {
+                const matchQ = !q || (p.title + ' ' + p.subtitle + ' ' + p.details).toLowerCase().includes(q);
+                const matchType = !type || p.type === type;
+                return matchQ && matchType;
+            });
+
+            renderPromos(filtered);
+        }
+
+        // events
+        document.addEventListener('DOMContentLoaded', () => {
+            // init
+            renderPromos(promotions);
+
+            document.getElementById('promoSearch').addEventListener('input', () => {
+                applyFilters();
+            });
+
+            document.getElementById('promoFilter').addEventListener('change', () => {
+                applyFilters();
+            });
+
+            document.getElementById('clearFilters').addEventListener('click', () => {
+                document.getElementById('promoSearch').value = '';
+                document.getElementById('promoFilter').value = '';
+                renderPromos(promotions);
+            });
+
+            document.getElementById('backToAll').addEventListener('click', () => {
+                document.getElementById('promoSearch').value = '';
+                document.getElementById('promoFilter').value = '';
+                renderPromos(promotions);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+}

@@ -10,9 +10,9 @@ public class Airplane
     public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required(ErrorMessage = "O nome é obrigatório.")]
-    [StringLength(50, ErrorMessage = "Máximo 100 caracteres.")]
+    [StringLength(50, ErrorMessage = "Máximo 50 caracteres.")]
     [Column("Name", TypeName = "varchar(50)")]
-    public string Name { get; internal set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O prefixo é obrigatório.")]
     [StringLength(5, ErrorMessage = "O prefixo deve ter no máximo 5 caracteres.")]

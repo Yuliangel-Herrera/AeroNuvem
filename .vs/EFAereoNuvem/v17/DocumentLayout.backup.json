@@ -1,14 +1,34 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Yuli\\Desktop\\unoesc\\AeroNuvem\\",
+  "WorkspaceRootPath": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{09229246-CDBC-4E91-9A3B-256694F7EF95}|EFAereoNuvem\\EFAereoNuvem.csproj|c:\\users\\yuli\\desktop\\unoesc\\aeronuvem\\efaereonuvem\\data\\appdbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{09229246-CDBC-4E91-9A3B-256694F7EF95}|EFAereoNuvem\\EFAereoNuvem.csproj|solutionrelative:efaereonuvem\\data\\appdbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|c:\\users\\yuli\\desktop\\unoesc\\fase-4\\aeronuvem\\views\\reservation\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|solutionrelative:views\\reservation\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{09229246-CDBC-4E91-9A3B-256694F7EF95}|EFAereoNuvem\\EFAereoNuvem.csproj|c:\\users\\yuli\\desktop\\unoesc\\aeronuvem\\efaereonuvem\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{09229246-CDBC-4E91-9A3B-256694F7EF95}|EFAereoNuvem\\EFAereoNuvem.csproj|solutionrelative:efaereonuvem\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|c:\\users\\yuli\\desktop\\unoesc\\fase-4\\aeronuvem\\viewmodel\\reservationviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|solutionrelative:viewmodel\\reservationviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|c:\\users\\yuli\\desktop\\unoesc\\fase-4\\aeronuvem\\controllers\\reservationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|solutionrelative:controllers\\reservationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|c:\\users\\yuli\\desktop\\unoesc\\fase-4\\aeronuvem\\repository\\flightrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|solutionrelative:repository\\flightrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|c:\\users\\yuli\\desktop\\unoesc\\fase-4\\aeronuvem\\views\\reservation\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|solutionrelative:views\\reservation\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|c:\\users\\yuli\\desktop\\unoesc\\fase-4\\aeronuvem\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|c:\\users\\yuli\\desktop\\unoesc\\fase-4\\aeronuvem\\models\\armchair.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{972CA623-5BA6-AD27-5F87-4A908AEC7EDC}|EFAereoNuvem.csproj|solutionrelative:models\\armchair.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,29 +46,88 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AppDbContextFactory.cs",
-              "DocumentMoniker": "C:\\Users\\Yuli\\Desktop\\unoesc\\AeroNuvem\\EFAereoNuvem\\Data\\AppDbContextFactory.cs",
-              "RelativeDocumentMoniker": "EFAereoNuvem\\Data\\AppDbContextFactory.cs",
-              "ToolTip": "C:\\Users\\Yuli\\Desktop\\unoesc\\AeroNuvem\\EFAereoNuvem\\Data\\AppDbContextFactory.cs",
-              "RelativeToolTip": "EFAereoNuvem\\Data\\AppDbContextFactory.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAsAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "FlightRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Repository\\FlightRepository.cs",
+              "RelativeDocumentMoniker": "Repository\\FlightRepository.cs",
+              "ToolTip": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Repository\\FlightRepository.cs",
+              "RelativeToolTip": "Repository\\FlightRepository.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAIwDUAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T01:06:08.841Z",
+              "WhenOpened": "2025-11-17T00:24:41.694Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAGkAAAAAAAAAAAAAAIAAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-17T00:02:11.736Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Armchair.cs",
+              "DocumentMoniker": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Models\\Armchair.cs",
+              "RelativeDocumentMoniker": "Models\\Armchair.cs",
+              "ToolTip": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Models\\Armchair.cs",
+              "RelativeToolTip": "Models\\Armchair.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-16T23:57:46.343Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Views\\Reservation\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\Reservation\\Create.cshtml",
+              "ToolTip": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Views\\Reservation\\Create.cshtml",
+              "RelativeToolTip": "Views\\Reservation\\Create.cshtml",
+              "ViewState": "AgIAAGEAAAAAAAAAAAAqwG8AAABcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-16T23:11:53.727Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AppDBContext.cs",
-              "DocumentMoniker": "C:\\Users\\Yuli\\Desktop\\unoesc\\AeroNuvem\\EFAereoNuvem\\Data\\AppDBContext.cs",
-              "RelativeDocumentMoniker": "EFAereoNuvem\\Data\\AppDBContext.cs",
-              "ToolTip": "C:\\Users\\Yuli\\Desktop\\unoesc\\AeroNuvem\\EFAereoNuvem\\Data\\AppDBContext.cs",
-              "RelativeToolTip": "EFAereoNuvem\\Data\\AppDBContext.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAswDgAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Views\\Reservation\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Reservation\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Views\\Reservation\\Index.cshtml",
+              "RelativeToolTip": "Views\\Reservation\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-16T23:38:49.414Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ReservationController.cs",
+              "DocumentMoniker": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Controllers\\ReservationController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ReservationController.cs",
+              "ToolTip": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\Controllers\\ReservationController.cs",
+              "RelativeToolTip": "Controllers\\ReservationController.cs",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAiwEAAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T01:01:45.305Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-16T23:16:53.536Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ReservationViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\ViewModel\\ReservationViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModel\\ReservationViewModel.cs",
+              "ToolTip": "C:\\Users\\Yuli\\Desktop\\unoesc\\Fase-4\\AeroNuvem\\ViewModel\\ReservationViewModel.cs",
+              "RelativeToolTip": "ViewModel\\ReservationViewModel.cs",
+              "ViewState": "AgIAADgAAAAAAAAAAAAvwCQAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-16T23:22:27.919Z"
             }
           ]
         }

@@ -1,0 +1,151 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Seja Premium";
+}
+
+<!-- Hero Section -->
+<section class="hero-section text-center text-white py-5"
+         style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+    <div class="container py-4">
+        <h1 class="display-5 fw-bold mb-3">
+            <i class="bi bi-star-fill me-2 text-warning"></i> Seja Premium
+        </h1>
+        <p class="lead mb-4">
+            Desbloqueie benefícios exclusivos e tenha uma experiência de viagem ainda mais completa.
+        </p>
+        <a href="#planos" class="btn btn-light btn-lg px-4 py-2 fw-semibold shadow">
+            <i class="bi bi-gem me-2 text-primary"></i> Ver Planos Premium
+        </a>
+    </div>
+</section>
+
+<!-- Benefícios -->
+<section class="py-5 bg-light">
+    <div class="container text-center">
+        <div class="mb-5">
+            <h2 class="fw-bold mb-3" style="color: var(--primary);">
+                Vantagens de ser Premium
+            </h2>
+            <p class="text-muted">Mais conforto, prioridade e recompensas em cada viagem.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body py-4">
+                        <div class="mb-3 text-primary fs-1">
+                            <i class="bi bi-airplane-engines"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Check-in Prioritário</h5>
+                        <p class="text-muted">Evite filas e embarque antes com acesso premium em todos os voos parceiros.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="150">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body py-4">
+                        <div class="mb-3 text-accent2 fs-1">
+                            <i class="bi bi-cash-coin"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Descontos Exclusivos</h5>
+                        <p class="text-muted">Economize até 30% em passagens, hospedagens e pacotes selecionados.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body py-4">
+                        <div class="mb-3 text-accent3 fs-1">
+                            <i class="bi bi-gift-fill"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Recompensas e Bônus</h5>
+                        <p class="text-muted">Ganhe pontos a cada reserva e troque por upgrades e viagens.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Planos Premium -->
+<section id="planos" class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4" style="color: var(--primary);">Escolha seu plano Premium</h2>
+        <p class="text-muted mb-5">Sem taxas ocultas. Cancele quando quiser.</p>
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Plano Mensal -->
+            <div class="col-md-4" data-aos="zoom-in">
+                <div class="card shadow border-0 h-100">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h5 class="mb-0 fw-semibold">Plano Mensal</h5>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="fw-bold mb-3" style="color: var(--primary);">
+                            R$ 39<span class="fs-5 text-muted">/mês</span>
+                        </h2>
+                        <ul class="list-unstyled text-start small mb-4">
+                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Check-in prioritário</li>
+                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Descontos em voos</li>
+                            <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Suporte 24h</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary-custom w-100">
+                            Assinar Mensal
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plano Anual -->
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="150">
+                <div class="card shadow-lg border border-warning h-100 position-relative">
+                    <span class="badge bg-warning text-dark position-absolute top-0 start-50 translate-middle-x mt-3 px-3 py-2 fw-semibold">
+                        Mais Popular
+                    </span>
+                    <div class="card-header bg-warning text-dark py-3">
+                        <h5 class="mb-0 fw-semibold">Plano Anual</h5>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="fw-bold mb-3" style="color: var(--accent2);">
+                            R$ 390<span class="fs-5 text-muted">/ano</span>
+                        </h2>
+                        <ul class="list-unstyled text-start small mb-4">
+                            <li><i class="bi bi-check-circle-fill text-warning me-2"></i>Todas as vantagens mensais</li>
+                            <li><i class="bi bi-check-circle-fill text-warning me-2"></i>2 meses grátis</li>
+                            <li><i class="bi bi-check-circle-fill text-warning me-2"></i>Acesso a promoções VIP</li>
+                        </ul>
+                        <a href="#" class="btn btn-warning text-dark w-100 fw-semibold">
+                            Assinar Anual
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Chamada Final -->
+<section class="py-5 text-center" style="background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: white;">
+    <div class="container">
+        <h2 class="fw-bold mb-3">Pronto para embarcar na experiência Premium?</h2>
+        <p class="mb-4">Torne-se um membro agora e aproveite benefícios exclusivos em todas as suas viagens.</p>
+        <a href="#" class="btn btn-light btn-lg px-4">
+            <i class="bi bi-gem me-2 text-primary"></i> Quero Ser Premium
+        </a>
+    </div>
+</section>
+
+<!-- Estilo adicional -->
+<style>
+    .text-accent2 {
+        color: var(--accent2) !important;
+    }
+
+    .text-accent3 {
+        color: var(--accent3) !important;
+    }
+</style>

@@ -4,6 +4,7 @@ using EFAereoNuvem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFAereoNuvem.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251114212258_ajuste_flight_Airport")]
+    partial class ajuste_flight_Airport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,8 +176,8 @@ namespace EFAereoNuvem.Migrations
 
                     b.Property<string>("Cpf")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar(11)");
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12)");
 
                     b.Property<Guid>("CurrentAdressId")
                         .HasColumnType("uniqueidentifier");
@@ -206,7 +209,7 @@ namespace EFAereoNuvem.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -218,7 +221,8 @@ namespace EFAereoNuvem.Migrations
 
                     b.HasIndex("FutureAdressId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Clients", (string)null);
                 });
@@ -236,9 +240,6 @@ namespace EFAereoNuvem.Migrations
                     b.Property<Guid>("AirplaneId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AirportId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("Arrival")
                         .HasColumnType("datetime");
 
@@ -254,14 +255,14 @@ namespace EFAereoNuvem.Migrations
                     b.Property<DateTime>("Departure")
                         .HasColumnType("datetime");
 
-                    b.Property<DateTime>("DepartureTime")
-                        .HasColumnType("datetime");
-
                     b.Property<string>("Destination")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)")
                         .HasColumnName("Destination");
+
+                    b.Property<Guid>("DestinationAirportId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Duration")
                         .HasColumnType("float");
@@ -278,6 +279,9 @@ namespace EFAereoNuvem.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("Origin");
 
+                    b.Property<Guid>("OriginAirportId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("RealArrival")
                         .HasColumnType("datetime");
 
@@ -291,7 +295,9 @@ namespace EFAereoNuvem.Migrations
 
                     b.HasIndex("AirplaneId");
 
-                    b.HasIndex("AirportId");
+                    b.HasIndex("DestinationAirportId");
+
+                    b.HasIndex("OriginAirportId");
 
                     b.ToTable("Flights", (string)null);
                 });
@@ -473,8 +479,10 @@ namespace EFAereoNuvem.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("EFAereoNuvem.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithOne("Client")
+                        .HasForeignKey("EFAereoNuvem.Models.Client", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CurrentAdress");
 
@@ -491,15 +499,23 @@ namespace EFAereoNuvem.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("EFAereoNuvem.Models.Airport", "Airport")
-                        .WithMany()
-                        .HasForeignKey("AirportId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("EFAereoNuvem.Models.Airport", "DestinationAirport")
+                        .WithMany("FlightsDestination")
+                        .HasForeignKey("DestinationAirportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EFAereoNuvem.Models.Airport", "OriginAirport")
+                        .WithMany("FlightsOrigin")
+                        .HasForeignKey("OriginAirportId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Airplane");
 
-                    b.Navigation("Airport");
+                    b.Navigation("DestinationAirport");
+
+                    b.Navigation("OriginAirport");
                 });
 
             modelBuilder.Entity("EFAereoNuvem.Models.Reservation", b =>
@@ -562,6 +578,13 @@ namespace EFAereoNuvem.Migrations
                     b.Navigation("Flights");
                 });
 
+            modelBuilder.Entity("EFAereoNuvem.Models.Airport", b =>
+                {
+                    b.Navigation("FlightsDestination");
+
+                    b.Navigation("FlightsOrigin");
+                });
+
             modelBuilder.Entity("EFAereoNuvem.Models.Armchair", b =>
                 {
                     b.Navigation("Reservation")
@@ -578,6 +601,11 @@ namespace EFAereoNuvem.Migrations
                     b.Navigation("Reservations");
 
                     b.Navigation("Scales");
+                });
+
+            modelBuilder.Entity("EFAereoNuvem.Models.User", b =>
+                {
+                    b.Navigation("Client");
                 });
 #pragma warning restore 612, 618
         }

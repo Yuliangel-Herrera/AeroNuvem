@@ -48,8 +48,13 @@ public class FlightRepository(AppDBContext context) : IFlightRepository
 
     public async Task<Flight?> GetByIdAsync(Guid id)
     {
-        var flight = await _context.Flights.FindAsync(id);
-        return flight;
+        return await _context.Flights
+        .Include(f => f.Airplane)
+        .Include(f => f.OriginAirport)
+        .Include(f => f.DestinationAirport)
+        .FirstOrDefaultAsync(f => f.Id == id);
+        //var flight = await _context.Flights.FindAsync(id);
+        //return flight;
     }
 
     public async Task<IEnumerable<Flight>> GetByRouteAsync(string origin, string destination)

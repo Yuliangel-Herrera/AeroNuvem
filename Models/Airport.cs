@@ -21,4 +21,7 @@ public class Airport
     public Guid AdressId { get; set; }
 
     public Adress Adress { get; set; } = null!; // Propriedade de navegação 
+    public ICollection<Flight> FlightsOrigin { get; set; } = null!; 
+    public ICollection<Flight> FlightsDestination { get; set; } = null!;
+
 }

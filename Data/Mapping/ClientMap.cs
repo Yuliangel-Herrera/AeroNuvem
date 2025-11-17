@@ -16,8 +16,8 @@ public class ClientMap : IEntityTypeConfiguration<Client>
             .ValueGeneratedOnAdd();
 
         builder.Property(c => c.Cpf)
-            .HasColumnType("varchar(11)")
-            .HasMaxLength(11)
+            .HasColumnType("varchar(12)")
+            .HasMaxLength(12)
             .IsRequired();
 
         // Índice único para CPF
@@ -46,18 +46,24 @@ public class ClientMap : IEntityTypeConfiguration<Client>
             .HasForeignKey(r => r.ClientId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Endereço atual (obrigatório) - CORRETO
+        // Endereço atual (obrigatório) 
         builder.HasOne(c => c.CurrentAdress)
             .WithMany()
             .HasForeignKey(c => c.CurrentAdressId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
-        // Endereço futuro (opcional) - CORRIGIDO
+        // Endereço futuro (opcional) 
         builder.HasOne(c => c.FutureAdress)
             .WithMany()
             .HasForeignKey(c => c.FutureAdressId)
             .OnDelete(DeleteBehavior.Restrict)
-            .IsRequired(false); // ✅ AGORA ESTÁ CORRETAMENTE OPCIONAL
+            .IsRequired(false); 
+
+        builder.HasOne(c => c.User)
+            .WithOne(u => u.Client)
+            .HasForeignKey<Client>(c => c.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
     }
 }

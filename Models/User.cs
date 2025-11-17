@@ -14,4 +14,5 @@ public class User
 
     // Relação com Role N:N
     public IList<Role> Roles { get; set; } = [];
+    public Client? Client { get; set; }
 }

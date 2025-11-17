@@ -303,16 +303,47 @@
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item me-2">
-                                <a class="btn btn-secondary-custom btn-sm uniform-btn" asp-controller="ClientDashboard" asp-action="Index">
-                                    <i class="fas fa-bars me-1"></i> Menu
-                                </a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <!-- Botão Menu para Admin -->
+                                    <a class="btn btn-secondary-custom btn-sm uniform-btn"
+                                       asp-controller="Dashboard"
+                                       asp-action="AdminDashboard">
+                                        <i class="fas fa-bars me-1"></i> Menu
+                                    </a>
+                                }
+                                else if (User.IsInRole("Client"))
+                                {
+                                    <!-- Botão Menu para Cliente -->
+                                    <a class="btn btn-secondary-custom btn-sm uniform-btn"
+                                       asp-controller="ClientDashboard"
+                                       asp-action="Index">
+                                        <i class="fas fa-bars me-1"></i> Menu
+                                    </a>
+                                }
                             </li>
 
                             <li class="nav-item me-2">
-                                <a class="btn btn-secondary-custom btn-sm uniform-btn" asp-controller="Reservation" asp-action="Index">
-                                    <i class="fas fa-ticket-alt me-1"></i> Reservas
-                                </a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="btn btn-secondary-custom btn-sm uniform-btn"
+                                       asp-controller="Profile" asp-action="Profile">
+                                        <i class="bi bi-person"></i> Meu perfil
+                                    </a>
+                                }
+                                else if (User.IsInRole("Client"))
+                                {
+                                    <a class="btn btn-secondary-custom btn-sm uniform-btn"
+                                       asp-controller="Profile" asp-action="Profile">
+                                        <i class="bi bi-person"></i> Meu perfil
+                                    </a>
+                                    <a class="btn btn-secondary-custom btn-sm uniform-btn"
+                                       asp-controller="Reservation" asp-action="Index">
+                                        <i class="fas fa-ticket-alt me-1"></i> Reservas
+                                    </a>
+                                }
                             </li>
+
 
                             <li class="nav-item">
                                 <form asp-controller="Login" asp-action="Logout" method="post" class="mb-0">
@@ -352,7 +383,7 @@
                 </div>
                 <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
                     <p class="mb-0 opacity-75">
-                        &copy; 2025 - Aereo Nuvem
+                        &copy; 2025 - Aéreo Nuvem
                     </p>
                 </div>
             </div>
@@ -364,8 +395,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script>
-        // Initialize AOS
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             AOS.init({
                 duration: 800,
                 easing: 'ease-out-quad',

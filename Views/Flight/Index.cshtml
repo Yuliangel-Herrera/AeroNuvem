@@ -8,6 +8,13 @@
 <section class="hero-section py-5">
     <div class="container">
         <div class="row align-items-center">
+            <!-- Botão Voltar Fixo (fora do container/col) -->
+            <a asp-action="AdminDashboard" asp-controller="Dashboard"
+               class="btn btn-primary-custom shadow position-fixed d-inline-flex align-items-center gap-2"
+               style="top: 20px; left: 20px; z-index: 1050; width: auto; padding: 10px 16px; border-radius: 50px;">
+                <i class="bi bi-arrow-left-circle"></i>
+                <span>Voltar</span>
+            </a>
             <div class="col-lg-8" data-aos="fade-right">
                 <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
                      style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
@@ -136,34 +143,41 @@
                                 @foreach (var flight in Model)
                                 {
                                     <tr>
-                                        @* <td class="fw-bold" style="color: var(--primary);">@flight.CodeFlight</td> *@
+                                        <td class="fw-bold" style="color: var(--primary);">@flight.CodeFlight</td>
                                         <td>@flight.Origin</td>
                                         <td>@flight.Destination</td>
-                                        <td>@flight.DepartureTime.ToString("dd/MM/yyyy")</td>
+
+                                        <td>@flight.DateFlight.ToString("dd/MM/yyyy")</td>
+
+                                        <!-- HORA DE PARTIDA -->
                                         <td>
-                                            <span class="badge badge-custom">@flight.Departure.ToString("HH:mm")</span>
-                                        </td>
-                                        <td>
-                                            <span class="badge" style="background: linear-gradient(135deg, var(--accent2), var(--accent3)); color: white;">
-                                                @flight.DateFlight.ToString("HH:mm")
+                                            <span class="badge badge-custom">
+                                                @flight.Departure.ToString("HH:mm")
                                             </span>
                                         </td>
+
+                                        <!-- HORA DE CHEGADA -->
+                                        <td>
+                                            <span class="badge" style="background: linear-gradient(135deg, var(--accent2), var(--accent3)); color: white;">
+                                                @flight.ArrivalTime.ToString("HH:mm")
+                                            </span>
+                                        </td>
+
+                                        <!-- TIPO DE VOO -->
                                         <td>
                                             <span class="badge" style="background: var(--accent1); color: var(--dark);">
                                                 @flight.TypeFlight
                                             </span>
                                         </td>
+
                                         <td class="text-center">
                                             <div class="btn-group" role="group">
-                                                <a asp-action="Details" asp-route-id="@flight.Id" class="btn btn-sm btn-outline-info" title="Detalhes">
-                                                    <i class="bi bi-eye"></i>
-                                                </a>
                                                 <a asp-action="Edit" asp-route-id="@flight.Id" class="btn btn-sm btn-outline-primary" title="Editar">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
                                                         data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                        data-flight-id="@flight.Id" data-flight-code="@flight.CodeFlight">
+                                                        data-flight-id="@flight.Id" data-flight-CodeFlight="@flight.CodeFlight">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>

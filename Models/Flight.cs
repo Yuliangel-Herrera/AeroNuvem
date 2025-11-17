@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using EFAereoNuvem.Models.Enum;
+﻿using EFAereoNuvem.Models.Enum;
 
 namespace EFAereoNuvem.Models;
 public class Flight
@@ -21,8 +19,10 @@ public class Flight
     public List<Reservation> Reservations { get; set; } = []; 
     public List<Scale> Scales { get; set; } = [];
     public Guid AirplaneId { get; set; }
-    public Airplane Airplane { get; set; } = new();
+    public Airplane Airplane { get; set; } = null!;
     public string Airline { get; internal set; } = "AereoNuvem";
-    public DateTime DepartureTime { get; internal set; }
-    public Airport Airport { get; internal set; } = new();
+    public Guid OriginAirportId { get; set; }
+    public Airport OriginAirport { get; set; } = null!;
+    public Guid DestinationAirportId { get; set; }
+    public Airport DestinationAirport { get; set; } = null!;
 }

@@ -48,13 +48,12 @@ public class ReservationRepository(AppDBContext context) : IReservationRepositor
     }
 
     // Todas as reservas de um determinado voo
-    public async Task<IEnumerable<Reservation>> GetReservationsByFlightIdAsync(Guid flightId)
+    public async Task<IEnumerable<Reservation>> GetReservationsByCodeFlightAsync(string codeFlight)
     {
         return await _context.Reservations
             .Include(r => r.Client) 
             .Include(r => r.Flight)
-            .Where(r => r.FlightId == flightId)
+            .Where(r => r.Flight.CodeFlight == codeFlight)
             .ToListAsync();
     }
-
 }

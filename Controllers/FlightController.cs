@@ -1,4 +1,5 @@
 ﻿using EFAereoNuvem.Models;
+using EFAereoNuvem.Repository;
 using EFAereoNuvem.Repository.Interface;
 using EFAereoNuvem.ViewModel;
 using EFAereoNuvem.ViewModel.ResponseViewModel;
@@ -11,12 +12,14 @@ public class FlightController : Controller
 {
     private readonly IFlightRepository _flightRepository;
     private readonly IAirplaneRepository _airplaneRepository;
+    private readonly IAirportRepository _airportRepository;
     private readonly IScaleRepository _scaleRepository;
 
-    public FlightController(IFlightRepository flightRepository, IAirplaneRepository airplaneRepository, IScaleRepository scaleRepository)
+    public FlightController(IFlightRepository flightRepository, IAirplaneRepository airplaneRepository, IAirportRepository airportRepository, IScaleRepository scaleRepository)
     {
         _flightRepository = flightRepository;
         _airplaneRepository = airplaneRepository;
+        _airportRepository = airportRepository;
         _scaleRepository = scaleRepository;
     }
 
@@ -25,7 +28,7 @@ public class FlightController : Controller
     {
         try
         {
-            var flights = await _flightRepository.GetAllAsync(page, pageSize );
+            var flights = await _flightRepository.GetAllAsync(page, pageSize);
             var flightViewModel = flights.Select(FlightViewModel.GetFlightViewModel).ToList();
             return View(flightViewModel);
         }
@@ -39,51 +42,72 @@ public class FlightController : Controller
 
     // CRUD
     [HttpGet]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create()
     {
         await LoadAirplanes();
+        await LoadAirports();
         return View();
     }
 
     [HttpPost]
-    //[Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Create(Flight flight, List<Scale> scales)
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Create(FlightCreateViewModel model, List<ScaleViewModel> scales)
     {
         if (!ModelState.IsValid)
         {
             await LoadAirplanes();
-            return View(flight);
+            await LoadAirports();
+            return View(model);
         }
 
         try
         {
-            // Definir horários reais iguais aos previstos inicialmente
-            flight.RealDeparture = flight.Departure;
-            flight.RealArrival = flight.Arrival;
-
-            // Verificar se possui escalas
-            if (flight.ExistScale && scales != null && scales.Any())
+            // Montar a entidade Flight a partir do ViewModel
+            var flight = new Flight
             {
-                flight.Scales = scales.Select((scale, index) => new Scale
+                CodeFlight = model.CodeFlight,
+                TypeFlight = model.TypeFlight,
+                Origin = model.Origin,
+                Destination = model.Destination,
+                OriginAirportId = model.OriginAirportId,
+                DestinationAirportId = model.DestinationAirportId,
+                DateFlight = model.DateFlight,
+                Departure = CombineDateAndTime(model.DateFlight, model.Departure),
+                Arrival = CombineDateAndTime(model.DateFlight, model.Arrival),
+                Duration = model.Duration,
+                ExistScale = model.ExistScale,
+                AirplaneId = model.AirplaneId,
+                RealDeparture = CombineDateAndTime(model.DateFlight, model.Departure),
+                RealArrival = CombineDateAndTime(model.DateFlight, model.Arrival)
+            };
+
+            // Escalas (se houver)
+            if (model.ExistScale && scales != null && scales.Any())
+            {
+                flight.Scales = scales.Select(scale => new Scale
                 {
                     Location = scale.Location,
-                    Arrival = CombineDateAndTime(flight.Departure.Date, scale.Arrival),
-                    Departure = CombineDateAndTime(flight.Departure.Date, scale.Departure),
-                    RealArrival = CombineDateAndTime(flight.Departure.Date, scale.Arrival),
-                    RealDeparture = CombineDateAndTime(flight.Departure.Date, scale.Departure)
+                    Departure = CombineDateAndTime(model.DateFlight, scale.Departure),
+                    Arrival = CombineDateAndTime(model.DateFlight, scale.Arrival),
+                    RealDeparture = CombineDateAndTime(model.DateFlight, scale.RealDeparture),
+                    RealArrival = CombineDateAndTime(model.DateFlight, scale.RealArrival),
+
                 }).ToList();
             }
+
             await _flightRepository.CreateAsync(flight);
 
-            TempData["SuccessMessage"] = ConstantsMessage.VOO_CADASTRADO_COM_SUCESSO;
+            var response = new ResponseViewModel<Flight>(flight, ConstantsMessage.VOO_CADASTRADO_COM_SUCESSO);
+            TempData["SuccessMessage"] = response.Messages.FirstOrDefault()?.Message;
             return RedirectToAction(nameof(Index));
         }
-        catch 
+        catch
         {
             await LoadAirplanes();
-            TempData["ErrorMessage"] = ConstantsMessage.ERRO_CADASTRO_VOO;
-            return View(flight);
+            var response = new ResponseViewModel<FlightCreateViewModel>(model, ConstantsMessage.ERRO_CADASTRO_VOO);
+            TempData["ErrorMessage"] = response.Messages.FirstOrDefault()?.Message;
+            return View(model);
         }
     }
 
@@ -95,7 +119,6 @@ public class FlightController : Controller
         if (flight == null)
         {
             var response = new ResponseViewModel<Flight?>(data: null, message: ConstantsMessage.NENHUM_VOO_ENCONTRADO);
-
             TempData["ErrorMessage"] = response.Messages.FirstOrDefault()?.Message;
             return RedirectToAction(nameof(Index));
         }
@@ -106,7 +129,7 @@ public class FlightController : Controller
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Edit(Guid id, Flight flight, List<Scale> scales)
+    public async Task<IActionResult> Edit(Guid id, Flight flight, List<ScaleViewModel> scales)
     {
         if (id != flight.Id)
         {
@@ -153,7 +176,7 @@ public class FlightController : Controller
             TempData["SuccessMessage"] = response.Messages.FirstOrDefault()?.Message;
             return RedirectToAction(nameof(Index));
         }
-        catch 
+        catch
         {
             await LoadAirplanes();
             var response = new ResponseViewModel<Flight>(flight, ConstantsMessage.ERRO_AO_ATUALIZAR_VOO);
@@ -225,6 +248,19 @@ public class FlightController : Controller
 
     // FILTROS E CONSULTAS
     [HttpGet]
+    public async Task<IActionResult> AvailableFlights(string origin, string destination, DateTime date)
+    {
+        var flights = await _flightRepository.GetAvailableFlightsAsync(origin, destination, date);
+        if (!flights.Any())
+        {
+            var response = new ResponseViewModel<List<Flight>>([ConstantsMessage.NENHUM_VOO_DISPONIVEL]);
+            TempData["InfoMessage"] = response.Messages.FirstOrDefault()?.Message;
+        }
+
+        return View("flights", flights);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> SearchByRoute(string origin, string destination)
     {
         var flights = await _flightRepository.GetByRouteAsync(origin, destination);
@@ -238,23 +274,10 @@ public class FlightController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> SearchByDate(DateTime date) 
+    public async Task<IActionResult> SearchByDate(DateTime date)
     {
         var flights = await _flightRepository.GetByDateAsync(date);
         return View("Index", flights);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> AvailableFlights(string origin, string destination, DateTime date)
-    {
-        var flights = await _flightRepository.GetAvailableFlightsAsync(origin, destination, date);
-        if (!flights.Any())
-        {
-            var response = new ResponseViewModel<List<Flight>>([ConstantsMessage.NENHUM_VOO_DISPONIVEL]);
-            TempData["InfoMessage"] = response.Messages.FirstOrDefault()?.Message;
-        }
-            
-        return View("flights", flights);
     }
 
     [HttpGet]
@@ -285,9 +308,20 @@ public class FlightController : Controller
         ViewBag.Airplanes = new SelectList(airplanes, "Id", "Prefix");
     }
 
-    private DateTime CombineDateAndTime(DateTime date, DateTime time)
+    private async Task LoadAirports(int page = 1, int pageSize = 25)
     {
-        return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
+        var airports = await _airportRepository.GetAll(page, pageSize);
+        ViewBag.Airports = airports
+            .Select(a => new { a.Id, Display = $"{a.Name} ({a.IATA}) "})
+            .ToList();
+        ViewBag.Airports = new SelectList(airports, "Id", "Name");
     }
 
+    private DateTime CombineDateAndTime(DateTime date, TimeSpan time)
+    {
+        return date.Date
+            .AddHours(time.Hours)
+               .AddMinutes(time.Minutes)
+               .AddSeconds(time.Seconds);
+    }
 }

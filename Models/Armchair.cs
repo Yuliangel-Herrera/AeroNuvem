@@ -17,5 +17,5 @@ public class Armchair
     public Class Class { get; set; }
     public SideType Side { get; set; }
     public bool IsAvaliable { get; set; }
-    public Reservation Reservation { get; set; } = new();
+    public Reservation? Reservation { get; set; } 
 }

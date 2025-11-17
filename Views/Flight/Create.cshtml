@@ -1,4 +1,4 @@
-﻿@model EFAereoNuvem.Models.Flight
+﻿@model EFAereoNuvem.ViewModel.FlightCreateViewModel
 
 @{
     ViewData["Title"] = "Novo Voo";
@@ -7,6 +7,13 @@
 <div class="page-header-section">
     <div class="container">
         <div class="row align-items-center">
+            <!-- Botão Voltar Fixo (fora do container/col) -->
+            <a asp-action="Index" asp-controller="Flight"
+               class="btn btn-primary-custom shadow position-fixed d-inline-flex align-items-center gap-2"
+               style="top: 20px; left: 20px; z-index: 1050; width: auto; padding: 10px 16px; border-radius: 50px;">
+                <i class="bi bi-arrow-left-circle"></i>
+                <span>Voltar</span>
+            </a>
             <div class="col-lg-8">
                 <h1 class="page-title">
                     <i class="bi bi-airplane-fill me-3"></i>Novo Voo
@@ -94,7 +101,21 @@
                                     <span asp-validation-for="Destination" class="text-danger small"></span>
                                 </div>
                             </div>
+                            <div>
+                                <label asp-for="OriginAirportId" class="form-label">Origem *</label>
+                                <select asp-for="OriginAirportId" class="form-select" asp-items="ViewBag.Airports">
+                                    <option value="">Selecione um aeroporto...</option>
+                                </select>
+                                <span asp-validation-for="OriginAirportId" class="text-danger small"></span>
 
+                            </div>
+                            <div>
+                                <label asp-for="DestinationAirportId" class="form-label">Destino *</label>
+                                <select asp-for="DestinationAirportId" class="form-select" asp-items="ViewBag.Airports">
+                                    <option value="">Selecione um aeroporto...</option>
+                                </select>
+                                <span asp-validation-for="DestinationAirportId" class="text-danger small"></span>
+                            </div>
                             <div class="row g-3 mt-2">
                                 <div class="col-md-3">
                                     <label asp-for="DateFlight" class="form-label">

@@ -1,0 +1,261 @@
+﻿@model IEnumerable<EFAereoNuvem.Models.Airport>
+
+@{
+    ViewData["Title"] = "Aeroportos";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Botão Voltar -->
+            <a asp-action="AdminDashboard" asp-controller="Dashboard"
+               class="btn btn-primary-custom shadow position-fixed d-inline-flex align-items-center gap-2"
+               style="top: 20px; left: 20px; z-index: 1050; width: auto; padding: 10px 16px; border-radius: 50px;">
+                <i class="bi bi-arrow-left-circle"></i>
+                <span>Voltar</span>
+            </a>
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-building me-2"></i>
+                    <span class="fw-semibold">Infraestrutura</span>
+                </div>
+                <h1 class="page-header mb-3">Gestão de Aeroportos</h1>
+                <p class="lead text-muted mb-4">Gerencie todos os aeroportos cadastrados no sistema</p>
+
+                <div class="d-flex flex-wrap gap-3">
+                    <a asp-action="Create" class="btn btn-primary-custom pulse-glow">
+                        <i class="bi bi-plus-circle me-2"></i> Novo Aeroporto
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="200">
+                <div class="floating">
+                    <i class="fas fa-city" style="font-size: 8rem; color: var(--accent2); opacity: 0.7;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5">
+
+    <!-- 🔍 Filtro de Busca (sempre visível) -->
+    <div class="container px-0" data-aos="fade-up">
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-body px-4 py-3">
+
+                <form asp-action="Details" method="get" class="row g-3 align-items-end">
+                    <div class="col-md-6 col-lg-4">
+                        <label for="IATA" class="form-label fw-semibold">Buscar por Código IATA</label>
+                        <div class="input-group">
+                            <span class="input-group-text" style="background: var(--accent1);">
+                                <i class="fas fa-search" style="color: var(--primary);"></i>
+                            </span>
+                            <input type="text" id="IATA" name="IATA" class="form-control" placeholder="Ex: GRU, JFK, CDG" maxlength="3" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-2 d-flex justify-content-start">
+                        <button type="submit" class="btn btn-primary-custom mt-2 mt-md-0 w-100">
+                            <i class="bi bi-search me-2"></i> Buscar
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards de Estatísticas (apenas quando não há busca) -->
+    @if (ViewBag.BuscaAtiva != true)
+    {
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up">
+                    <div class="stat-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-plane-departure"></i>
+                        </div>
+                        <h3 class="fw-bold" style="color: var(--primary);">@Model?.Count()</h3>
+                        <p class="text-muted mb-0">Total de Aeroportos</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="stat-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="fw-bold" style="color: var(--accent2);">@Model?.Select(a => a.IATA).Distinct().Count()</h3>
+                        <p class="text-muted mb-0">Códigos IATA Registrados</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3 class="fw-bold" style="color: var(--secondary);">Ativos</h3>
+                        <p class="text-muted mb-0">Aeroportos Operacionais</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+
+
+<!-- Main Content -->
+<section class="py-5">
+    <div class="container">
+        <!-- Mensagens -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-custom alert-dismissible fade show mb-4" role="alert" data-aos="fade-up">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill me-3" style="font-size: 1.5rem;"></i>
+                    <div class="flex-grow-1">
+                        <h6 class="alert-heading mb-1">Sucesso!</h6>
+                        <p class="mb-0">@TempData["SuccessMessage"]</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-custom alert-dismissible fade show mb-4" role="alert" data-aos="fade-up">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill me-3" style="font-size: 1.5rem;"></i>
+                    <div class="flex-grow-1">
+                        <h6 class="alert-heading mb-1">Erro!</h6>
+                        <p class="mb-0">@TempData["ErrorMessage"]</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        }
+
+        <!-- Tabela de Aeroportos -->
+        @if (Model != null && Model.Any())
+        {
+            <div class="card" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                    <h5 class="card-title mb-0 text-white">
+                        <i class="fas fa-list me-2"></i>Lista de Aeroportos
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-custom table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-code me-2"></i>IATA</th>
+                                    <th><i class="fas fa-building me-2"></i>Nome</th>
+                                    <th><i class="fas fa-map-marker-alt me-2"></i>Localização</th>
+                                    <th class="text-center"><i class="fas fa-cogs me-2"></i>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var airport in Model)
+                                {
+                                    <tr>
+                                        <td class="fw-bold" style="color: var(--primary);">@airport.IATA</td>
+                                        <td>@airport.Name</td>
+                                        <td>
+                                            <small class="text-muted">
+                                                @airport.Adress?.City - @airport.Adress?.State
+                                            </small>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group" role="group">
+                                                <a asp-action="Edit" asp-route-id="@airport.Id" class="btn btn-sm btn-outline-primary" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                        data-airport-id="@airport.Id" data-airport-iata="@airport.IATA">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card text-center py-5" data-aos="fade-up">
+                <div class="card-body">
+                    <div class="floating mb-4">
+                        <i class="fas fa-city" style="font-size: 4rem; color: var(--accent2);"></i>
+                    </div>
+                    <h4 style="color: var(--primary);">Nenhum aeroporto cadastrado</h4>
+                    <p class="text-muted mb-4">Comece cadastrando um novo aeroporto no sistema</p>
+                    <a asp-action="Create" class="btn btn-primary-custom">
+                        <i class="bi bi-plus-circle me-2"></i> Cadastrar Primeiro Aeroporto
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                <h5 class="modal-title text-white">
+                    <i class="bi bi-exclamation-triangle me-2"></i> Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning alert-custom mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill me-3" style="color: var(--accent2);"></i>
+                        <div>
+                            <strong>Atenção!</strong> Esta ação não pode ser desfeita.
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-0">Tem certeza que deseja excluir o aeroporto <strong id="airportIATA" style="color: var(--primary);"></strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i> Cancelar
+                </button>
+                <form id="deleteForm" method="post" asp-action="Delete">
+                    <input type="hidden" id="airportId" name="id" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i> Confirmar Exclusão
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Delete modal
+        var deleteModal = document.getElementById('deleteModal');
+        if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var airportId = button.getAttribute('data-airport-id');
+                var airportIATA = button.getAttribute('data-airport-iata');
+
+                document.getElementById('airportIATA').textContent = airportIATA;
+                document.getElementById('airportId').value = airportId;
+            });
+        }
+    </script>
+}

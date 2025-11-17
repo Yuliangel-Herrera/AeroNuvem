@@ -1,6 +1,7 @@
 ﻿using EFAereoNuvem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace EFAereoNuvem.Data.Mapping;
 
@@ -56,10 +57,6 @@ public class FlightMap : IEntityTypeConfiguration<Flight>
             .HasColumnType("datetime")
             .IsRequired();
 
-        builder.Property(f => f.DepartureTime)
-            .HasColumnType("datetime")
-            .IsRequired();
-
         builder.Property(f => f.ExistScale)
             .HasColumnType("bit")
             .IsRequired();
@@ -88,6 +85,18 @@ public class FlightMap : IEntityTypeConfiguration<Flight>
         builder.HasOne(f => f.Airplane)
             .WithMany(a => a.Flights)
             .HasForeignKey(f => f.AirplaneId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Airport Origem (RESTRICT)
+        builder.HasOne(f => f.OriginAirport)
+            .WithMany(a => a.FlightsOrigin)
+            .HasForeignKey(f => f.OriginAirportId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Airport Destino (RESTRICT)
+        builder.HasOne(f => f.DestinationAirport)
+            .WithMany(a => a.FlightsDestination)
+            .HasForeignKey(f => f.DestinationAirportId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

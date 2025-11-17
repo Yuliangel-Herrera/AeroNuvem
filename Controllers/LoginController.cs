@@ -52,7 +52,6 @@ public class LoginController : Controller
                 return View(model);
             }
 
-            // Filtros extras 
             if (string.IsNullOrEmpty(user.PasswordHash))
             {
                 Console.WriteLine("❌ PasswordHash ausente para o usuário");
@@ -60,7 +59,7 @@ public class LoginController : Controller
                 return View(model);
             }
 
-            // Verifica a senha usando PasswordHasher<User>
+            // Verifica a senha
             var passwordHasher = new PasswordHasher<User>();
             var verificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
 
@@ -73,17 +72,22 @@ public class LoginController : Controller
 
             // Cria claims
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-            };
+        {
+            new Claim(ClaimTypes.Name, user.Email),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+        };
 
+            bool isAdmin = false;
             if (user.Roles != null)
             {
                 foreach (var role in user.Roles)
                 {
                     if (!string.IsNullOrEmpty(role?.TypeRole))
+                    {
                         claims.Add(new Claim(ClaimTypes.Role, role.TypeRole));
+                        if (role.TypeRole.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                            isAdmin = true;
+                    }
                 }
             }
 
@@ -94,10 +98,9 @@ public class LoginController : Controller
                 ExpiresUtc = DateTimeOffset.UtcNow.AddHours(8)
             };
 
-            // Efetua login por cookie 
-            await HttpContext.SignInAsync
-            (
-                "CookieAuth", 
+            // Efetua login
+            await HttpContext.SignInAsync(
+                "CookieAuth",
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties
             );
@@ -105,9 +108,21 @@ public class LoginController : Controller
             HttpContext.Session.SetString("UserEmail", user.Email ?? "");
             HttpContext.Session.SetString("UserName", user.Username ?? "");
 
-            Console.WriteLine("✅ Senha válida - Login bem-sucedido");
+            Console.WriteLine("✅ Login bem-sucedido");
+
             TempData["SuccessMessage"] = "Login realizado com sucesso!";
-            return RedirectToAction("Index", "Home");
+
+            // 🔹 Redirecionamento condicional
+            if (isAdmin)
+            {
+                Console.WriteLine("🔹 Redirecionando para Dashboard do Admin");
+                return RedirectToAction("AdminDashboard", "Dashboard");
+            }
+            else
+            {
+                Console.WriteLine("🔹 Redirecionando para Dashboard do Cliente");
+                return RedirectToAction("ClientDashboard", "Dashboard");
+            }
         }
         catch (Exception ex)
         {
@@ -119,8 +134,7 @@ public class LoginController : Controller
             if (ex.InnerException != null)
             {
                 Console.WriteLine("--- InnerException ---");
-                Console.WriteLine(ex.InnerException.GetType().FullName + ": " + ex.InnerException.Message);
-                Console.WriteLine(ex.InnerException.StackTrace);
+                Console.WriteLine(ex.InnerException.Message);
             }
 
             ModelState.AddModelError(string.Empty, "Erro interno do sistema. Tente novamente.");

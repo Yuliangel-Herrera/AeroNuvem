@@ -8,6 +8,13 @@
 <section class="hero-section py-5">
     <div class="container">
         <div class="row align-items-center">
+            <!-- Botão Voltar Fixo (fora do container/col) -->
+            <a asp-action="AdminDashboard" asp-controller="Dashboard"
+               class="btn btn-primary-custom shadow position-fixed d-inline-flex align-items-center gap-2"
+               style="top: 20px; left: 20px; z-index: 1050; width: auto; padding: 10px 16px; border-radius: 50px;">
+                <i class="bi bi-arrow-left-circle"></i>
+                <span>Voltar</span>
+            </a>
             <div class="col-lg-8" data-aos="fade-right">
                 <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
                      style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
@@ -23,6 +30,7 @@
                     </a>
                 </div>
             </div>
+
             <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="200">
                 <div class="floating">
                     <i class="fas fa-plane" style="font-size: 8rem; color: var(--accent2); opacity: 0.7;"></i>

@@ -1,0 +1,120 @@
+﻿@model EFAereoNuvem.Models.User
+
+@{
+    ViewData["Title"] = "Meu Perfil";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-user me-2"></i>
+                    <span class="fw-semibold">Perfil</span>
+                </div>
+                <h1 class="page-header mb-3">Meu Perfil</h1>
+                <p class="lead text-muted mb-4">
+                    Veja suas informações pessoais e de conta
+                </p>
+            </div>
+            <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="200">
+                <div class="floating">
+                    <i class="fas fa-user-circle" style="font-size: 9rem; color: var(--accent2); opacity: 0.8;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Profile Card -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow" data-aos="fade-up">
+                    <div class="card-header text-white"
+                         style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-id-card me-2"></i> Dados do Usuário
+                        </h5>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <!-- Mensagens -->
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                @TempData["SuccessMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                @TempData["ErrorMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        <!-- Dados -->
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="fas fa-user me-2 text-primary"></i>Nome de Usuário
+                                </label>
+                                <div class="form-control bg-light">@Model.Username</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="fas fa-envelope me-2 text-primary"></i>Email
+                                </label>
+                                <div class="form-control bg-light">@Model.Email</div>
+                            </div>
+
+                            @if (Model.Client != null)
+                            {
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-id-card me-2 text-primary"></i>CPF
+                                    </label>
+                                    <div class="form-control bg-light">@Model.Client.Cpf</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-phone me-2 text-primary"></i>Telefone
+                                    </label>
+                                    <div class="form-control bg-light">@Model.Client.Phone</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-calendar-alt me-2 text-primary"></i>Data de Nascimento
+                                    </label>
+                                    <div class="form-control bg-light">
+                                        @Model.Client.BornDate.ToString("dd/MM/yyyy")
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-end bg-light">
+                        <a asp-controller="Dashboard" asp-action="AdminDashboard" class="btn btn-secondary-custom">
+                            <i class="bi bi-arrow-left-circle me-2"></i> Voltar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        AOS.init({ duration: 700, once: true });
+    </script>
+}

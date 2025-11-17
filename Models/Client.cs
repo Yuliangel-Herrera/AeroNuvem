@@ -26,6 +26,6 @@ public class Client
     public Guid? FutureAdressId { get; set; } 
     public Adress? FutureAdress { get; set; }
     public ICollection<Reservation> Reservations { get; set; } = [];
-
-    public User? User { get; set; }
+    public Guid UserId { get; set; } 
+    public User User { get; set; } = null!;
 }

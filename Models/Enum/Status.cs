@@ -1,9 +1,7 @@
-﻿namespace EFAereoNuvem.Models.Enum
+﻿namespace EFAereoNuvem.Models.Enum;
+public enum Status
 {
-    public enum Status
-    {
-        Gold = 1,
-        Silver = 2,
-        Bronze = 3
-    }
+    Gold = 1,
+    Silver = 2,
+    Bronze = 3
 }

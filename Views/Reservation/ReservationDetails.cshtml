@@ -1,4 +1,5 @@
-﻿@model EFAereoNuvem.ViewModel.ReservationViewModel
+﻿@using EFAereoNuvem.Models.Enum
+@model EFAereoNuvem.ViewModel.ReservationViewModel
 @{
     ViewData["Title"] = "Detalhes da Reserva";
 }
@@ -88,11 +89,11 @@
                                 <div class="mb-3">
                                     <strong>Número da Reserva:</strong> @Model.ReservationNumber<br>
                                     <strong>Status:</strong>
-                                    <span class="badge @(Model.Status == "Confirmada" ? "bg-success" : "bg-warning")">
+                                    <span class="badge @(Model.Status == StatusReservation.Confirmada ? "bg-success" : "bg-warning")">
                                         @Model.Status
                                     </span><br>
                                     <strong>Assento:</strong> @Model.SeatNumber<br>
-                                    <strong>Data da Reserva:</strong> @Model.ReservationDate.ToString("dd/MM/yyyy HH:mm")
+                                    <strong>Data da Reserva:</strong> @Model.DateReservation.ToString("dd/MM/yyyy HH:mm")
                                 </div>
 
                                 <div class="price-section text-center p-3 bg-light rounded">
@@ -103,7 +104,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-end">
-                        @if (Model.Status == "Confirmada")
+                        @if (Model.Status == StatusReservation.Confirmada)
                         {
                             <form asp-action="CancelReservation" method="post" class="d-inline">
                                 <input type="hidden" name="reservationId" value="@Model.Id" />

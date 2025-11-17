@@ -26,18 +26,25 @@ public class AirplaneController(IAirplaneRepository airplaneRepository) : Contro
     }
 
     [HttpGet]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public IActionResult Create()
     {
         return View();
     }
 
     [HttpPost]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create(Airplane airplane)
     {
         if (!ModelState.IsValid)
-            return View(airplane);
+        {
+            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            {
+                Console.WriteLine(error.ErrorMessage);
+                return View(airplane);
+            }
+        }
+
 
         try
         {
@@ -92,7 +99,7 @@ public class AirplaneController(IAirplaneRepository airplaneRepository) : Contro
             TempData["SuccessMessage"] = response.Messages.FirstOrDefault()?.Message;
             return RedirectToAction(nameof(Index));
         }
-        catch (Exception ex)
+        catch
         {
             var response = new ResponseViewModel<Airplane>(airplane, ConstantsMessage.ERRO_AO_ATUALIZAR_AERONAVE);
             TempData["ErrorMessage"] = response.Messages.FirstOrDefault()?.Message;
@@ -168,5 +175,4 @@ public class AirplaneController(IAirplaneRepository airplaneRepository) : Contro
             return RedirectToAction(nameof(Index));
         }
     }
-
 }

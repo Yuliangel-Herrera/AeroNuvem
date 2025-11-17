@@ -66,4 +66,14 @@ public class ConstantsMessage
     // Reservation
     public static readonly MessageResponse NENHUMA_RESERVA_ENCONTRADA = new(TypeMessage.ALERTA, 6001, "Nenhuma reserva encontrada.");
     public static readonly MessageResponse ERRO_CADASTRO_RESERVA = new(TypeMessage.ERRO, 6002, "Erro ao cadastrar a reserva.");
+
+    // Airport
+    public static readonly MessageResponse AEROPORTO_NAO_ENCONTRADO = new(TypeMessage.ERRO, 7001, "Aeroporto com o Id informado não encontrado.");
+    public static readonly MessageResponse NENHUM_AEROPORTO_ENCONTRADO = new(TypeMessage.ERRO, 7002, "Nenhum aeroporto encontrado.");
+    public static readonly MessageResponse AEROPORTO_CADASTRADO_COM_SUCESSO = new(TypeMessage.SUCESSO, 7003, "Aeroporto cadastrado com sucesso.");
+    public static readonly MessageResponse ERRO_CADASTRO_AEROPORTO = new(TypeMessage.ERRO, 7004, "Erro ao cadastrar o aeroporto.");
+    public static readonly MessageResponse AEROPORTO_ATUALIZADO_COM_SUCESSO = new(TypeMessage.SUCESSO, 7005, "Aeroporto atualizado com sucesso.");
+    public static readonly MessageResponse ERRO_AO_ATUALIZAR_AEROPORTO = new(TypeMessage.ERRO, 7007, "Erro ao atualizar o aeroporto.");
+    public static readonly MessageResponse AEROPORTO_EXCLUIDO_COM_SUCESSO = new(TypeMessage.SUCESSO, 7006, "Aeroporto excluido com sucesso.");
+    public static readonly MessageResponse ERRO_AO_EXCLUIR_AEROPORTO = new(TypeMessage.ERRO, 7008, "Erro ao excluir o aeroporto.");
 }

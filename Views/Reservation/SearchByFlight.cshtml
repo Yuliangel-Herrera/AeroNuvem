@@ -1,0 +1,234 @@
+﻿@using EFAereoNuvem.Models.Enum
+@model List<EFAereoNuvem.ViewModel.ReservationViewModel>
+
+@{
+    ViewData["Title"] = "Reservas por Voo";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Botão Voltar -->
+            <a asp-action="AdminDashboard" asp-controller="Dashboard"
+               class="btn btn-primary-custom shadow position-fixed d-inline-flex align-items-center gap-2"
+               style="top: 20px; left: 20px; z-index: 1050; width: auto; padding: 10px 16px; border-radius: 50px;">
+                <i class="bi bi-arrow-left-circle"></i>
+                <span>Voltar</span>
+            </a>
+
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-plane-departure me-2"></i>
+                    <span class="fw-semibold">Painel Administrativo</span>
+                </div>
+                <h1 class="page-header mb-3">Reservas por Voo</h1>
+                <p class="lead text-muted mb-4">Pesquise e gerencie as reservas de um voo específico</p>
+            </div>
+
+            <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="200">
+                <div class="floating">
+                    <i class="fas fa-ticket-alt" style="font-size: 8rem; color: var(--accent2); opacity: 0.7;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 🔍 Filtro de Busca -->
+<section class="pb-4">
+    <div class="container px-0" data-aos="fade-up">
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-body px-4 py-3">
+                <form asp-action="SearchByFlight" method="get" class="row g-3 align-items-end">
+                    <div class="col-md-6 col-lg-4">
+                        <label for="flightCode" class="form-label fw-semibold text-muted">
+                            Buscar reservas por código de voo
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text border-0" style="background: var(--accent2); color: white;">
+                                <i class="fas fa-plane-departure"></i>
+                            </span>
+                            <input type="text" id="flightCode" name="flightCode"
+                                   class="form-control shadow-sm"
+                                   placeholder="Ex: FL123"
+                                   maxlength="6"
+                                   value="@ViewData["FlightCode"]"
+                                   style="border-left: 0; border-radius: 0 0.5rem 0.5rem 0;" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-2">
+                        <button type="submit" class="btn btn-primary-custom w-100 mt-3 mt-md-0">
+                            <i class="fas fa-search me-2"></i>Buscar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 🧾 Lista de Reservas -->
+<section class="py-5">
+    <div class="container">
+        <!-- Mensagens -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-custom alert-dismissible fade show mb-4" role="alert" data-aos="fade-up">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill me-3" style="font-size: 1.5rem;"></i>
+                    <div class="flex-grow-1">
+                        <h6 class="alert-heading mb-1">Sucesso!</h6>
+                        <p class="mb-0">@TempData["SuccessMessage"]</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-custom alert-dismissible fade show mb-4" role="alert" data-aos="fade-up">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill me-3" style="font-size: 1.5rem;"></i>
+                    <div class="flex-grow-1">
+                        <h6 class="alert-heading mb-1">Erro!</h6>
+                        <p class="mb-0">@TempData["ErrorMessage"]</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        }
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="row g-4">
+                @foreach (var reservation in Model)
+                {
+                    <div class="col-12" data-aos="fade-up">
+                        <div class="card reservation-card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="reservation-badge @(reservation.Status == StatusReservation.Confirmada ? "bg-success" : "bg-warning")">
+                                                @reservation.Status
+                                            </div>
+                                            <div class="ms-3">
+                                                <h5 class="mb-1">@reservation.FlightNumber - @reservation.Origin → @reservation.Destination</h5>
+                                                <p class="text-muted mb-0">
+                                                    <small>Reserva: @reservation.ReservationNumber</small>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="flight-info">
+                                                    <strong>@reservation.DepartureTime.ToString("dd/MM/yyyy HH:mm")</strong><br>
+                                                    <span class="text-muted">@reservation.Origin</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="flight-info text-sm-end">
+                                                    <strong>@reservation.ArrivalTime.ToString("dd/MM/yyyy HH:mm")</strong><br>
+                                                    <span class="text-muted">@reservation.Destination</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-md-4">
+                                                <small class="text-muted">Passageiro</small><br>
+                                                <strong>@reservation.PassengerName</strong>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <small class="text-muted">Assento</small><br>
+                                                <strong>@reservation.SeatNumber</strong>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <small class="text-muted">Valor</small><br>
+                                                <strong class="text-primary">R$ @reservation.Price.ToString("N2")</strong>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <small class="text-muted">Data</small><br>
+                                                <strong>@reservation.DateReservation.ToString("dd/MM/yyyy")</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 text-end">
+                                        <div class="btn-group-vertical w-100">
+                                            <a asp-action="ReservationDetails" asp-route-id="@reservation.Id"
+                                               class="btn btn-outline-primary mb-2">
+                                                <i class="fas fa-eye me-2"></i>Detalhes
+                                            </a>
+                                            @if (reservation.Status == StatusReservation.Confirmada)
+                                            {
+                                                <form asp-action="CancelReservationAdmin" method="post" class="w-100">
+                                                    <input type="hidden" name="reservationId" value="@reservation.Id" />
+                                                    <button type="submit" class="btn btn-outline-danger w-100"
+                                                            onclick="return confirm('Tem certeza que deseja cancelar esta reserva?')">
+                                                        <i class="fas fa-times me-2"></i>Cancelar
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <!-- Nenhuma reserva encontrada -->
+            <div class="card text-center py-5" data-aos="fade-up">
+                <div class="card-body">
+                    <div class="floating mb-4">
+                        <i class="fas fa-plane-slash" style="font-size: 4rem; color: var(--accent2);"></i>
+                    </div>
+                    <h4 style="color: var(--primary);">Nenhuma reserva encontrada</h4>
+                    <p class="text-muted mb-4">Não há reservas associadas ao voo informado.</p>
+                    <a asp-action="Index" asp-controller="Flight" class="btn btn-primary-custom">
+                        <i class="bi bi-search me-2"></i> Buscar outro voo
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Estilos adicionais -->
+<style>
+    .reservation-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-left: 4px solid var(--primary);
+    }
+
+        .reservation-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+    .reservation-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .flight-info {
+        padding: 0.5rem 0;
+    }
+
+    .btn-group-vertical .btn {
+        margin-bottom: 0.5rem;
+    }
+</style>

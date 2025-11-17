@@ -6,19 +6,24 @@ public class ReservationViewModel
 {
     public Guid Id { get; set; }
     public string ReservationNumber { get; set; } = string.Empty;
-    public string Status { get; set; } = "Confirmada";
-    public DateTime ReservationDate { get; set; }
+    public StatusReservation Status { get; set; } = StatusReservation.Confirmada;
+    public DateTime DateReservation { get; set; }
+    public Class Class { get; set; }
 
     // Voo
+    public Guid FlightId { get; set; }
     public string FlightNumber { get; set; } = string.Empty;
     public string Origin { get; set; } = string.Empty;
     public string Destination { get; set; } = string.Empty;
+    public Airport OriginAirport { get; set; } = null!;
+    public Airport DestinationAirport { get; set; } = null!;
     public DateTime DepartureTime { get; set; }
     public DateTime ArrivalTime { get; set; }
     public string Airline { get; set; } = string.Empty;
     public string AircraftType { get; set; } = string.Empty;
 
     // Passageiro
+    public Guid ClientId { get; set; }
     public string PassengerName { get; set; } = string.Empty;
     public string PassengerEmail { get; set; } = string.Empty;
     public string PassengerPhone { get; set; } = string.Empty;
@@ -33,9 +38,6 @@ public class ReservationViewModel
 
     public static ReservationViewModel GetReservationViewModel(Reservation reservation)
     {
-        if (reservation == null)
-            throw new ArgumentNullException(nameof(reservation));
-
         var flight = reservation.Flight;
         var client = reservation.Client;
         var seat = reservation.ReservedArmchair;
@@ -45,20 +47,25 @@ public class ReservationViewModel
         {
             Id = reservation.Id,
             ReservationNumber = reservation.CodeRersevation,
-            Status = "Confirmada",
-            ReservationDate = reservation.DateReservation,
+            Status = StatusReservation.Confirmada,
+            DateReservation = reservation.DateReservation,
+            Class = reservation.Class,
 
             // Dados do voo
+            FlightId = flight.Id,
             FlightNumber = flight.CodeFlight,
             Origin = flight.Origin,
             Destination = flight.Destination,
             DepartureTime = flight.Departure,
+            OriginAirport = flight.OriginAirport,
+            DestinationAirport = flight.DestinationAirport,
             ArrivalTime = flight.Arrival,
             Airline = flight.Airline,
             AircraftType = airplane.Name,
-            Terminal = flight.Airport.Name,
+            Terminal = flight.DestinationAirport.Name,
 
             // Dados do passageiro
+            ClientId = client.Id,
             PassengerName = client.Name,
             PassengerEmail = client.Email,
             PassengerPhone = client.Phone,

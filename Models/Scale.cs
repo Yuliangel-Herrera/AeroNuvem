@@ -11,7 +11,7 @@ namespace EFAereoNuvem.Models
 
         [Required]
         [MaxLength(50)]
-        public string Location { get; set; } = string.Empty; // Novo campo
+        public string Location { get; set; } = string.Empty; 
 
         [Required]
         public DateTime Arrival { get; set; }

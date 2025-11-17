@@ -42,6 +42,20 @@
                             <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-custom mb-4"></div>
 
                             <div class="row g-3">
+
+                                <div class="col-12">
+                                    <label asp-for="Name" class="form-label fw-semibold">Nome *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="background: var(--accent1);">
+                                            <i class="fas fa-font" style="color: var(--primary);"></i>
+                                        </span>
+                                        <input asp-for="Name" class="form-control" placeholder="Ex: Aeronave Comercial 01" maxlength="50" />
+                                    </div>
+                                    <span asp-validation-for="Name" class="text-danger small"></span>
+                                    <small class="text-muted">Nome descritivo da aeronave</small>
+                                </div>
+
+
                                 <div class="col-12">
                                     <label asp-for="Prefix" class="form-label fw-semibold">Prefixo *</label>
                                     <div class="input-group">

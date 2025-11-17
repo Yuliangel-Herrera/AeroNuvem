@@ -1,0 +1,145 @@
+﻿@model EFAereoNuvem.ViewModel.AirportCreateViewModel
+
+@{
+    ViewData["Title"] = "Novo Aeroporto";
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Botão Voltar Fixo (fora do container/col) -->
+            <a asp-action="Index" asp-controller="Airport"
+               class="btn btn-primary-custom shadow position-fixed d-inline-flex align-items-center gap-2"
+               style="top: 20px; left: 20px; z-index: 1050; width: auto; padding: 10px 16px; border-radius: 50px;">
+                <i class="bi bi-arrow-left-circle"></i>
+                <span>Voltar</span>
+            </a>
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="d-inline-flex align-items-center px-3 py-2 rounded-pill mb-3"
+                     style="background: linear-gradient(135deg, var(--accent3), var(--accent2)); color: white;">
+                    <i class="fas fa-building me-2"></i>
+                    <span class="fw-semibold">Novo Aeroporto</span>
+                </div>
+                <h1 class="page-header mb-3">Cadastrar Novo Aeroporto</h1>
+                <p class="lead text-muted mb-4">Informe os dados do aeroporto e seu endereço completo para adicioná-lo ao sistema.</p>
+            </div>
+            <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="200">
+                <div class="floating">
+                    <i class="fas fa-plane-departure" style="font-size: 8rem; color: var(--accent2); opacity: 0.7;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Form Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                        <h5 class="card-title mb-0 text-white">
+                            <i class="fas fa-plane me-2"></i> Dados do Aeroporto
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form asp-action="Create" method="post">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-custom mb-4"></div>
+
+                            <!-- Dados do Aeroporto -->
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-8">
+                                    <label asp-for="Name" class="form-label fw-semibold">Nome *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="background: var(--accent1);">
+                                            <i class="fas fa-building" style="color: var(--primary);"></i>
+                                        </span>
+                                        <input asp-for="Name" class="form-control" placeholder="Ex: Aeroporto Internacional de Guarulhos" maxlength="100" />
+                                    </div>
+                                    <span asp-validation-for="Name" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label asp-for="IATA" class="form-label fw-semibold">Código IATA *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="background: var(--accent1);">
+                                            <i class="fas fa-qrcode" style="color: var(--primary);"></i>
+                                        </span>
+                                        <input asp-for="IATA" class="form-control text-uppercase" placeholder="Ex: GRU" maxlength="3" />
+                                    </div>
+                                    <span asp-validation-for="IATA" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <!-- Endereço -->
+                            <h5 class="fw-bold border-bottom pb-2 mt-4 mb-3 text-primary">
+                                <i class="bi bi-geo-alt-fill me-2"></i> Endereço do Aeroporto
+                            </h5>
+
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <label asp-for="Street" class="form-label fw-semibold">Rua *</label>
+                                    <input asp-for="Street" class="form-control" placeholder="Ex: Rodovia Hélio Smidt" />
+                                    <span asp-validation-for="Street" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label asp-for="Number" class="form-label fw-semibold">Número *</label>
+                                    <input asp-for="Number" class="form-control" placeholder="Ex: 1234" />
+                                    <span asp-validation-for="Number" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label asp-for="Complement" class="form-label fw-semibold">Complemento</label>
+                                    <input asp-for="Complement" class="form-control" placeholder="Ex: Terminal 2, Setor A" />
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="City" class="form-label fw-semibold">Cidade *</label>
+                                    <input asp-for="City" class="form-control" placeholder="Ex: Guarulhos" />
+                                    <span asp-validation-for="City" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="State" class="form-label fw-semibold">Estado *</label>
+                                    <input asp-for="State" class="form-control" placeholder="Ex: SP" maxlength="2" />
+                                    <span asp-validation-for="State" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-8">
+                                    <label asp-for="Country" class="form-label fw-semibold">País *</label>
+                                    <input asp-for="Country" class="form-control" placeholder="Ex: Brasil" />
+                                    <span asp-validation-for="Country" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label asp-for="Cep" class="form-label fw-semibold">CEP *</label>
+                                    <input asp-for="Cep" class="form-control" placeholder="Ex: 07190-100" />
+                                    <span asp-validation-for="Cep" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <!-- Botões -->
+                            <div class="d-flex flex-wrap gap-3 justify-content-end pt-4 mt-4 border-top">
+                                <a asp-action="Index" class="btn btn-secondary-custom">
+                                    <i class="bi bi-x-circle me-2"></i> Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary-custom pulse-glow">
+                                    <i class="bi bi-save me-2"></i> Cadastrar Aeroporto
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
